@@ -1,0 +1,43 @@
+<p>product works!</p>
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+  <div class="form-group form-row">
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Tên"
+        formControlName="name"
+        [typeahead]="products"
+        typeaheadOptionField="name"
+        (typeaheadOnSelect)="onSelect($event)"
+      />
+    </div>
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Diễn giải"
+        formControlName="description"
+      />
+    </div>
+    <div class="col">
+      <select class="form-control" formControlName="type">
+        <option value="1">Dịch vụ</option>
+        <option value="2">Hàng hóa</option>
+        <option value="3">Thanh toán</option>
+        <option value="4">Phụ thu</option>
+      </select>
+    </div>
+    <div class="col">
+      <input type="number" class="form-control" placeholder="Giá" formControlName="price" />
+    </div>
+  </div>
+  <div class="form-group form-row text-center">
+    <div class="col text-center">
+      <div class="btn-group">
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+        <button type="button" class="btn btn-danger" (click)="deleteProduct()">Xóa</button>
+      </div>
+    </div>
+  </div>
+</form>

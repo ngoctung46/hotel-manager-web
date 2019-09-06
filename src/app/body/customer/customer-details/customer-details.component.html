@@ -1,0 +1,33 @@
+<div *ngIf="customer$ | async; let customer">
+  <h1 class="text-center text-primary">Thông tin khách lưu trú</h1>
+  <div class="row">
+    <div class="col border bg-light">
+      <b>Họ và tên:</b> {{ customer.lastName }} {{ customer.firstName }}
+    </div>
+    <div class="col border bg-light">
+      <b>Ngày sinh:</b> {{ customer.birthDate.toDate() | date: 'dd/MM/yyyy' }}
+    </div>
+    <div class="border bg-light"><b>Nơi sinh:</b> {{ customer.birthPlace }}</div>
+    <div class="border bg-light"></div>
+  </div>
+  <div class="row">
+    <div class="col border bg-light"><b>CMND/HC số:</b> {{ customer.idNumber }}</div>
+    <div class="col border bg-light">
+      <b>Ngày cấp:</b> {{ customer.issuedDate.toDate() | date: 'dd/MM/yyyy' }}
+    </div>
+    <div class="col border bg-light">
+      <b>Ngày hết hạn: </b> {{ customer.expiredDate.toDate() | date: 'dd/MM/yyyy' }}
+    </div>
+    <div class="col border bg-light"><b>Nơi cấp: </b> {{ customer.issuedPlace }}</div>
+  </div>
+  <div class="row">
+    <div class="col border bg-light">
+      <b>Địa chỉ:</b> {{ customer.addressLine1 }}, {{ customer.addressLine2 }}, {{ customer.city }},
+      {{ customer.country }}
+    </div>
+    <div class="col border bg-light"><b>Điện thoại: </b> {{ customer.phone }}</div>
+  </div>
+  <div class="text-center">
+    <button class="btn btn-outline-primary" (click)="goBack()">Quay về</button>
+  </div>
+</div>

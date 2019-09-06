@@ -1,0 +1,14 @@
+<nav>
+  <mat-toolbar color="primary">
+    <span>Hoang Long Hotel</span>
+    <span class="spacer"></span>
+    <button
+      *ngFor="let item of menuItems$ | async"
+      mat-button
+      routerLink="{{ item.path }}"
+      routerLinkActive="active"
+    >
+      {{ item.displayName }}
+    </button>
+  </mat-toolbar>
+</nav>

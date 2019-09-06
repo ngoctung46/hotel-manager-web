@@ -1,0 +1,39 @@
+<div class="card text-center" style="margin: 8px">
+  <div class="card-header bg-info">
+    {{ room.type === 0 ? 'Phòng Đơn' : 'Phòng Đôi' }}
+  </div>
+  <div class="card-body" [ngStyle]="{ background: room.occupied ? 'coral' : 'white' }">
+    <h1 class="card-title">{{ room.number }}</h1>
+    <p class="card-text">{{ room.occupied ? 'Có Khách' : 'Trống' }}</p>
+  </div>
+  <div class="card-footer" style="padding: 0px">
+    <button
+      title="Nhận Phòng"
+      *ngIf="!room.occupied; else elseBlock"
+      class="btn btn-block btn-outline-danger"
+      [routerLink]="['/customer/room', room.id]"
+    >
+      <mat-icon>hotel</mat-icon>
+    </button>
+    <ng-template #elseBlock>
+      <div class="btn-group btn-block" role="group">
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          [routerLink]="['/customer', room.customerId]"
+        >
+          <mat-icon>accessibility</mat-icon>
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-info"
+          [routerLink]="['/order', room.orderId]"
+          routerLinkActive="router-link-active"
+        >
+          <mat-icon>add_shopping_cart</mat-icon>
+        </button>
+        <button type="button" class="btn btn-outline-success"><mat-icon>receipt</mat-icon></button>
+      </div>
+    </ng-template>
+  </div>
+</div>

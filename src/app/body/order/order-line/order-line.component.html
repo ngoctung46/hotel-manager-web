@@ -1,0 +1,47 @@
+<p>order-line works!</p>
+<form [formGroup]="orderLineForm" (ngSubmit)="onSubmit()">
+  <div class="form-group form-row">
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Tên"
+        formControlName="name"
+        [typeahead]="products"
+        typeaheadOptionField="name"
+        (typeaheadOnSelect)="onSelect($event)"
+      />
+    </div>
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Số lượng" formControlName="quantity" />
+    </div>
+    <div class="col">
+      <input
+        type="text"
+        [value]="orderLineForm.get('price').value | number"
+        class="form-control"
+        placeholder="Giá"
+        formControlName="price"
+      />
+    </div>
+    <div class="col">
+      <input
+        type="text"
+        [value]="orderLineForm.get('total').value | number"
+        class="form-control"
+        placeholder="Thành tiền"
+        formControlName="total"
+      />
+    </div>
+  </div>
+  <div class="form-group form-row text-center">
+    <div class="col text-center">
+      <div class="btn-group">
+        <button type="submit" class="btn btn-primary" [disabled]="!orderLineForm.valid">
+          Thêm
+        </button>
+        <button type="button" class="btn btn-danger">Xong</button>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,2 @@
+<app-form *ngIf="roomId" [roomId]="roomId" (finished)="onFinished($event)"></app-form>
+<app-customer-details *ngIf="id" [customer$]="customer$"></app-customer-details>

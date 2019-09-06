@@ -1,0 +1,138 @@
+<h1 class="text-center text-danger">Thông tin khách lưu trú</h1>
+<form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+  <label class="my-1 mr-2">Giấy tờ tùy thân</label>
+  <div class="form-row form-group">
+    <div class="col-6">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="CMND số"
+        formControlName="idNumber"
+        [typeahead]="customers"
+        typeaheadOptionField="idNumber"
+        (typeaheadOnSelect)="onSelect($event)"
+      />
+    </div>
+    <div class="col-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Ngày Cấp"
+        formControlName="issuedDate"
+        bsDatepicker
+        [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+      />
+    </div>
+    <div class="col-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Ngày Hết Hạn"
+        formControlName="expiredDate"
+        bsDatepicker
+        [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+      />
+    </div>
+    <div class="col-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Nơi cấp"
+        formControlName="issuedPlace"
+        [typeahead]="provinces"
+        [isAnimated]="true"
+      />
+    </div>
+  </div>
+  <label class="my-1 mr-2">Thông tin cá nhân</label>
+  <div class="form-row form-group">
+    <div class="col-2">
+      <input
+        type="text"
+        name="lastName"
+        class="form-control"
+        placeholder="Họ"
+        formControlName="lastName"
+      />
+    </div>
+    <div class="col-4">
+      <input type="text" class="form-control" placeholder="Tên" formControlName="firstName" />
+    </div>
+    <div class="col-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Ngày Sinh"
+        formControlName="birthDate"
+        bsDatepicker
+        [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+      />
+    </div>
+    <div class="col-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Nơi Sinh"
+        formControlName="birthPlace"
+        [typeahead]="provinces"
+        [isAnimated]="true"
+      />
+    </div>
+    <div class="col-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Quốc Tịch"
+        formControlName="nationality"
+        [typeahead]="countries"
+        [isAnimated]="true"
+      />
+    </div>
+  </div>
+  <label class="my-1 mr-2">Thông tin liên hệ</label>
+  <div class="form-row form-group">
+    <div class="col-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Số nhà, đường"
+        formControlName="addressLine1"
+      />
+    </div>
+    <div class="col-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Phường (Xã), Quận (Huyện)"
+        formControlName="addressLine2"
+      />
+    </div>
+    <div class="col-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Tỉnh (Thành Phố)"
+        formControlName="city"
+        [typeahead]="provinces"
+        [isAnimated]="true"
+      />
+    </div>
+    <div class="col-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Quốc Gia"
+        formControlName="country"
+        [typeahead]="countries"
+        [isAnimated]="true"
+      />
+    </div>
+    <div class="col-2">
+      <input type="text" class="form-control" placeholder="Số ĐT" formControlName="phone" />
+    </div>
+  </div>
+  <div class="text-center">
+    <button class="btn btn-primary" [disabled]="!customerForm.valid">OK</button>
+    <button class="btn btn-danger" (click)="onClear();">Hủy</button>
+  </div>
+</form>

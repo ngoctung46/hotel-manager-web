@@ -1,3 +1,4 @@
+import { FirebaseService } from './services/firebase.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'hotel-manager';
+  constructor(private fs: FirebaseService) {
+    this.fs.initMenu();
+    this.fs.initRooms();
+  }
 }
