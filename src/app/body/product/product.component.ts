@@ -69,7 +69,9 @@ export class ProductComponent implements OnInit {
 
   resetForm() {
     this.productForm.reset();
+    this.productForm.get('type').setValue(1);
     this.productId = null;
+    this.product = null;
   }
 
   getProductType(type: string): ProductType {

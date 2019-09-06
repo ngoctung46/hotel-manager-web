@@ -135,12 +135,33 @@ export class FirebaseService {
   updateOrderLine(orderLine: OrderLine, id: string) {
     this.orderLines.doc(id).update(orderLine);
   }
-  getOrderLineByProductId(productId: string): Observable<OrderLine[]> {
+
+  deleteOrderLine(id: string) {
+    this.orderLines.doc(id).delete();
+  }
+
+  getOrderLinesByOrderId(orderId: string) {
     return this.afs
-      .collection<OrderLine>(ORDER_LINE_COLLECTION, ref =>
-        ref.where('productId', '==', productId).limit(1)
-      )
+      .collection<OrderLine>(ORDER_LINE_COLLECTION, ref => ref.where('orderId', '==', orderId))
       .valueChanges();
+  }
+  getOrderLineByProductIdAndOrderId(productId: string, orderId: string): Observable<OrderLine> {
+    const collection = this.afs.collection<OrderLine>(ORDER_LINE_COLLECTION, ref =>
+      ref
+        .where('productId', '==', productId)
+        .where('orderId', '==', orderId)
+        .limit(1)
+    );
+    return collection.snapshotChanges().pipe(
+      map(
+        actions =>
+          actions.map(a => {
+            const data = a.payload.doc.data() as OrderLine;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          })[0]
+      )
+    );
   }
 
   /** PRODUCT */

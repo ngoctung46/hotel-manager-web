@@ -1,4 +1,4 @@
-<p>product works!</p>
+<h3 class="text-center">Sản Phẩm</h3>
 <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
   <div class="form-group form-row">
     <div class="col">
@@ -31,9 +31,7 @@
     <div class="col">
       <input type="number" class="form-control" placeholder="Giá" formControlName="price" />
     </div>
-  </div>
-  <div class="form-group form-row text-center">
-    <div class="col text-center">
+    <div class="col">
       <div class="btn-group">
         <button type="submit" class="btn btn-primary">Cập nhật</button>
         <button type="button" class="btn btn-danger" (click)="deleteProduct()">Xóa</button>
@@ -41,3 +39,4 @@
     </div>
   </div>
 </form>
+<app-product-list></app-product-list>

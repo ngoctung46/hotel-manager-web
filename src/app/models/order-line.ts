@@ -1,6 +1,7 @@
 import { Product } from './product';
 
 export interface OrderLine {
+  id?: string;
   orderId: string;
   customerId?: string;
   productId?: string;

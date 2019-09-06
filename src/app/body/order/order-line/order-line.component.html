@@ -1,4 +1,3 @@
-<p>order-line works!</p>
 <form [formGroup]="orderLineForm" (ngSubmit)="onSubmit()">
   <div class="form-group form-row">
     <div class="col">
@@ -13,7 +12,13 @@
       />
     </div>
     <div class="col">
-      <input type="text" class="form-control" placeholder="Số lượng" formControlName="quantity" />
+      <input
+        type="number"
+        class="form-control"
+        placeholder="Số lượng"
+        formControlName="quantity"
+        [readonly]="product == null"
+      />
     </div>
     <div class="col">
       <input
@@ -22,6 +27,7 @@
         class="form-control"
         placeholder="Giá"
         formControlName="price"
+        readonly
       />
     </div>
     <div class="col">
@@ -31,16 +37,22 @@
         class="form-control"
         placeholder="Thành tiền"
         formControlName="total"
+        readonly
       />
     </div>
-  </div>
-  <div class="form-group form-row text-center">
-    <div class="col text-center">
+    <div class="col">
       <div class="btn-group">
-        <button type="submit" class="btn btn-primary" [disabled]="!orderLineForm.valid">
-          Thêm
+        <button type="submit" class="btn btn-outline-primary" [disabled]="!orderLineForm.valid">
+          Cập nhật
         </button>
-        <button type="button" class="btn btn-danger">Xong</button>
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          [disabled]="existedOrderLine == null"
+          (click)="delete()"
+        >
+          Xóa
+        </button>
       </div>
     </div>
   </div>

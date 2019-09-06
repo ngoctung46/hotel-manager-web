@@ -78,7 +78,7 @@ export class FormComponent implements OnInit {
       addressLine2: [this.customer.addressLine2],
       city: [this.customer.city],
       country: [this.customer.country],
-      phone: [this.customer.phone]
+      phone: [this.customer.phone, Validators.required]
     });
   }
   addCustomer() {

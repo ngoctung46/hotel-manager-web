@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FirebaseService } from 'src/app/services/firebase.service';
+import { Observable } from 'rxjs';
+import { OrderLine } from 'src/app/models/order-line';
 
 @Component({
   selector: 'app-order',
@@ -8,9 +11,11 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class OrderComponent implements OnInit {
   id: string;
-  constructor(private route: ActivatedRoute) {}
+  orderLines$: Observable<OrderLine[]>;
+  constructor(private route: ActivatedRoute, private fs: FirebaseService) {}
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
+    this.orderLines$ = this.fs.getOrderLinesByOrderId(this.id);
   }
 }

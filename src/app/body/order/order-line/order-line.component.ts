@@ -15,6 +15,7 @@ export class OrderLineComponent implements OnInit {
   @Input() orderId = '';
   orderLineForm: FormGroup;
   orderLine: OrderLine;
+  existedOrderLine: OrderLine = null;
   order: Order;
   product: Product;
   products: Product[] = [];
@@ -23,25 +24,41 @@ export class OrderLineComponent implements OnInit {
   ngOnInit() {
     this.setForm();
     this.fs.getProducts().subscribe(products => (this.products = products));
-    // this.fs.getOrderById(this.orderId).subscribe(order => (this.order = order));
-    this.disableForm();
+    this.fs.getOrderById(this.orderId).subscribe(order => (this.order = order));
+    this.orderLineForm.get('quantity').valueChanges.subscribe(qty => {
+      this.orderLineForm.get('total').setValue(qty * this.product.price);
+    });
   }
 
   onSubmit() {
-    this.initOrderLine();
-    // const orderLineId = this.fs.addOrderLine(this.orderLine);
-    // this.order.orderLineIds.push(orderLineId);
-    // this.fs.updateOrder(this.order, this.orderId);
-    console.log(`OrderLine: ${JSON.stringify(this.orderLine)}`);
-    console.log(`Order: ${JSON.stringify(this.order)}`);
+    this.setOrderLine();
+    if (this.existedOrderLine) {
+      this.updateOrderLine();
+      console.log(`Updated OrderLine: ${JSON.stringify(this.orderLine)}`);
+    } else {
+      this.addOrderLine();
+      console.log(`Added OrderLine: ${JSON.stringify(this.orderLine)}`);
+      console.log(`Updated Order: ${JSON.stringify(this.order)}`);
+    }
+    this.resetForm();
+  }
+
+  addOrderLine() {
+    const orderLineId = this.fs.addOrderLine(this.orderLine);
+    this.order.orderLineIds.push(orderLineId);
+    this.fs.updateOrder(this.order, this.orderId);
+  }
+  updateOrderLine() {
+    this.fs.updateOrderLine(this.orderLine, this.existedOrderLine.id);
   }
 
   onSelect(event: TypeaheadMatch) {
     this.product = (event.item as unknown) as Product;
-    this.fs.getOrderLineByProductId(this.product.id).subscribe(ol => {
-      console.log(`ol: ${JSON.stringify(ol)}`);
+    this.fs.getOrderLineByProductIdAndOrderId(this.product.id, this.orderId).subscribe(ol => {
+      this.existedOrderLine = ol;
+      console.log(`Existed ol: ${JSON.stringify(this.existedOrderLine)}`);
+      this.updateForm();
     });
-    this.enableForm();
   }
 
   setForm() {
@@ -52,33 +69,39 @@ export class OrderLineComponent implements OnInit {
       total: ['', Validators.required]
     });
   }
-
-  disableForm() {
-    this.orderLineForm.get('quantity').disable();
-    this.orderLineForm.get('price').disable();
-    this.orderLineForm.get('total').disable();
-  }
-
-  enableForm() {
-    if (this.product) {
-      console.log(`Product: ${JSON.stringify(this.product)}`);
-      this.orderLineForm.get('price').setValue(this.product.price);
-      const qtyCtrl = this.orderLineForm.get('quantity');
-      qtyCtrl.enable();
-      qtyCtrl.valueChanges.subscribe(qty => {
-        this.orderLineForm.get('total').setValue(qty * this.product.price);
-      });
-      qtyCtrl.setValue('1');
+  delete() {
+    if (this.existedOrderLine) {
+      this.fs.deleteOrderLine(this.existedOrderLine.id);
+      this.resetForm();
     }
   }
-  initOrderLine() {
-    const ol = this.orderLineForm.value as OrderLine;
-    console.log(JSON.stringify(ol));
+
+  updateForm() {
+    if (this.product) {
+      this.orderLineForm.get('price').setValue(this.product.price);
+      const qtyCtrl = this.orderLineForm.get('quantity');
+      if (this.existedOrderLine) {
+        qtyCtrl.setValue(this.existedOrderLine.quantity);
+      } else {
+        qtyCtrl.setValue(1);
+      }
+    }
+  }
+
+  setOrderLine() {
+    const ol = this.orderLineForm.value;
     this.orderLine = {
       product: this.product,
-      orderId: this.product.id,
+      orderId: this.orderId,
+      productId: this.product.id,
       quantity: ol.quantity,
       total: ol.total
     };
+  }
+  resetForm() {
+    this.orderLineForm.reset();
+    this.orderLine = null;
+    this.product = null;
+    this.existedOrderLine = null;
   }
 }

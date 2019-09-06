@@ -19,6 +19,8 @@ import { CustomerDetailsComponent } from './customer/customer-details/customer-d
 import { ProductComponent } from './product/product.component';
 import { OrderComponent } from './order/order.component';
 import { OrderLineComponent } from './order/order-line/order-line.component';
+import { OrderDetailsComponent } from './order/order-details/order-details.component';
+import { ProductListComponent } from './product/product-list/product-list.component';
 defineLocale('vi', viLocale);
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ defineLocale('vi', viLocale);
     CustomerDetailsComponent,
     ProductComponent,
     OrderComponent,
-    OrderLineComponent
+    OrderLineComponent,
+    OrderDetailsComponent,
+    ProductListComponent
   ],
   providers: [FirebaseService],
   imports: [
