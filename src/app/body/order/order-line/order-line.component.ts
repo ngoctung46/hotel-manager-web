@@ -19,6 +19,12 @@ export class OrderLineComponent implements OnInit {
   order: Order;
   product: Product;
   products: Product[] = [];
+  errors: string;
+  alert = {
+    type: 'danger',
+    timeout: 3000,
+    msg: 'Không đủ hàng trong kho'
+  };
   constructor(private fb: FormBuilder, private fs: FirebaseService) {}
 
   ngOnInit() {
@@ -34,29 +40,37 @@ export class OrderLineComponent implements OnInit {
     this.setOrderLine();
     if (this.existedOrderLine) {
       this.updateOrderLine();
-      console.log(`Updated OrderLine: ${JSON.stringify(this.orderLine)}`);
     } else {
       this.addOrderLine();
-      console.log(`Added OrderLine: ${JSON.stringify(this.orderLine)}`);
-      console.log(`Updated Order: ${JSON.stringify(this.order)}`);
     }
     this.resetForm();
   }
 
   addOrderLine() {
+    const qty = this.product.inStock - this.orderLine.quantity;
+    if (qty < 0) {
+      this.errors = 'Không đủ số lượng trong kho';
+      return;
+    }
     const orderLineId = this.fs.addOrderLine(this.orderLine);
     this.order.orderLineIds.push(orderLineId);
     this.fs.updateOrder(this.order, this.orderId);
+    this.fs.updateProductQty(this.product.id, qty);
   }
   updateOrderLine() {
+    const qty = this.product.inStock + +this.existedOrderLine.quantity - this.orderLine.quantity;
+    if (qty < 0) {
+      this.errors = 'Không đủ số lượng trong kho';
+      return;
+    }
     this.fs.updateOrderLine(this.orderLine, this.existedOrderLine.id);
+    this.fs.updateProductQty(this.product.id, qty);
   }
 
   onSelect(event: TypeaheadMatch) {
     this.product = (event.item as unknown) as Product;
     this.fs.getOrderLineByProductIdAndOrderId(this.product.id, this.orderId).subscribe(ol => {
       this.existedOrderLine = ol;
-      console.log(`Existed ol: ${JSON.stringify(this.existedOrderLine)}`);
       this.updateForm();
     });
   }
@@ -72,6 +86,8 @@ export class OrderLineComponent implements OnInit {
   delete() {
     if (this.existedOrderLine) {
       this.fs.deleteOrderLine(this.existedOrderLine.id);
+      const qty = this.product.inStock + +this.existedOrderLine.quantity;
+      this.fs.updateProductQty(this.product.id, qty);
       this.resetForm();
     }
   }

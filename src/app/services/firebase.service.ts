@@ -38,11 +38,11 @@ export class FirebaseService {
   initMenu() {
     this.menuItems.valueChanges().subscribe(items => {
       if (items.length <= 0) {
-        this.addMenuItem({ displayName: 'Home', path: '/home', order: 0 });
-        this.addMenuItem({ displayName: 'Reports', path: '/report', order: 1 });
-        this.addMenuItem({ displayName: 'Expenses', path: '/expense', order: 2 });
-        this.addMenuItem({ displayName: 'Services', path: '/service', order: 3 });
-        this.addMenuItem({ displayName: 'Products', path: '/product', order: 4 });
+        this.addMenuItem({ displayName: 'Phòng', path: '/home', order: 0 });
+        this.addMenuItem({ displayName: 'Báo cáo', path: '/report', order: 1 });
+        this.addMenuItem({ displayName: 'Thu chi', path: '/expense', order: 2 });
+        this.addMenuItem({ displayName: 'Dịch vụ', path: '/product', order: 3 });
+        this.addMenuItem({ displayName: 'Nhập kho', path: '/stock', order: 4 });
       }
     });
   }
@@ -74,7 +74,9 @@ export class FirebaseService {
   }
 
   getMenuItems(): Observable<MenuItem[]> {
-    return this.menuItems.valueChanges().pipe(tap(items => items.sort(x => x.order)));
+    return this.menuItems
+      .valueChanges()
+      .pipe(tap(items => items.sort((x, y) => x.order - y.order)));
   }
 
   /** ROOM */
@@ -128,7 +130,9 @@ export class FirebaseService {
 
   /** ORDER-LINE */
   addOrderLine(orderLine: OrderLine): string {
+    const now = new Date().getTime();
     const id = this.afs.createId();
+    orderLine.createdAt = now;
     this.orderLines.doc(id).set(orderLine);
     return id;
   }
@@ -176,6 +180,18 @@ export class FirebaseService {
       )
     );
   }
+  getStockableProducts(): Observable<Product[]> {
+    const products = this.afs.collection(PRODUCT_COLLECTION, ref => ref.where('type', '==', 2));
+    return products.snapshotChanges().pipe(
+      map(actions =>
+        actions.map(a => {
+          const data = a.payload.doc.data() as Product;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        })
+      )
+    );
+  }
   addProduct(product: Product): string {
     const id = this.afs.createId();
     this.products.doc(id).set(product);
@@ -183,6 +199,9 @@ export class FirebaseService {
   }
   updateProduct(product: Product, id: string) {
     this.products.doc(id).update(product);
+  }
+  updateProductQty(id: string, quantity: number) {
+    this.products.doc(id).update({ inStock: quantity });
   }
   deleteProduct(id: string) {
     this.products.doc(id).delete();

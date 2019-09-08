@@ -17,19 +17,32 @@ export class ProductComponent implements OnInit {
     name: '',
     price: null,
     description: '',
-    type: ProductType.Service
+    type: ProductType.Item,
+    inStock: 0
   };
+  items: Item[] = [
+    { name: 'Dịch vụ', type: ProductType.Service },
+    { name: 'Hàng hóa', type: ProductType.Item },
+    { name: 'Thanh toán', type: ProductType.Payment },
+    { name: 'Phụ thu', type: ProductType.ExtraCharge }
+  ];
   products: Product[] = [];
   productId = null;
   constructor(private fb: FormBuilder, private fs: FirebaseService) {}
 
   ngOnInit() {
     this.setForm();
+    this.resetForm();
     this.fs.getProducts().subscribe(products => (this.products = products));
   }
   onSubmit() {
     this.product = this.productForm.value as Product;
-    this.product.type = this.getProductType(this.product.type);
+    if (this.product.type === ProductType.Payment) {
+      this.product.price = -this.product.price;
+    }
+    if (this.product.type === ProductType.Item) {
+      this.product.inStock = 0;
+    }
     if (this.productId) {
       this.updateProduct();
     } else {
@@ -48,7 +61,8 @@ export class ProductComponent implements OnInit {
       name: [this.product.name, Validators.required],
       price: [this.product.price, Validators.required],
       type: [this.product.type, Validators.required],
-      description: [this.product.description]
+      description: [this.product.description],
+      inStock: [this.product.inStock]
     });
   }
 
@@ -69,25 +83,12 @@ export class ProductComponent implements OnInit {
 
   resetForm() {
     this.productForm.reset();
-    this.productForm.get('type').setValue(1);
+    this.productForm.get('type').setValue(ProductType.Item);
     this.productId = null;
     this.product = null;
   }
-
-  getProductType(type: string): ProductType {
-    switch (type) {
-      case '0':
-        return ProductType.RoomRate;
-      case '1':
-        return ProductType.Service;
-      case '2':
-        return ProductType.Item;
-      case '4':
-        return ProductType.Payment;
-      case '5':
-        return ProductType.ExtraCharge;
-      default:
-        return ProductType.Item;
-    }
-  }
+}
+interface Item {
+  name: string;
+  type: ProductType;
 }

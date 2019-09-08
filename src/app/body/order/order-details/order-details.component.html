@@ -1,28 +1,35 @@
-<table *ngIf="orderLines$" class="table table-hover table-bordered text-center">
-  <thead class="bg-info">
-    <tr>
-      <th scope="col">STT</th>
-      <th scope="col">Tên</th>
-      <th scope="col">Số lượng</th>
-      <th scope="col">Giá</th>
-      <th scope="col" class="text-right">Thành tiền</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let ol of orderLines$ | async; let i = index">
-      <th scope="row">{{ i + 1 }}</th>
-      <td>{{ ol.product.name }}</td>
-      <td>{{ ol.quantity }}</td>
-      <td>{{ ol.product.price | number }}đ</td>
-      <td class="text-right">
-        <b>{{ ol.total | number }}đ</b>
-      </td>
-    </tr>
-    <tr class="text-right text-danger">
-      <td colspan="4"><b>Thành tiền</b></td>
-      <td>
-        <b>{{ total$ | async | number }}đ</b>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<ng-container *ngIf="orderLines$ | async; let orderLines">
+  <ng-container *ngIf="orderLines.length > 0">
+    <h4 class="text-center">Hóa đơn tạm tính</h4>
+    <table class="table table-hover table-bordered text-center">
+      <thead class="bg-info">
+        <tr>
+          <th scope="col">STT</th>
+          <th scope="col">Tên</th>
+          <th scope="col">Loại</th>
+          <th scope="col">Số lượng</th>
+          <th scope="col">Giá</th>
+          <th scope="col" class="text-right">Tổng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ol of orderLines; let i = index">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ ol.product.name }}</td>
+          <td>{{ ol.product.type | productType }}</td>
+          <td>{{ ol.quantity }}</td>
+          <td>{{ ol.product.price | number }}đ</td>
+          <td class="text-right">
+            <b>{{ ol.total | number }}đ</b>
+          </td>
+        </tr>
+        <tr class="text-right text-danger">
+          <td colspan="5"><b>Thành tiền</b></td>
+          <td>
+            <b>{{ total | number }}đ</b>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</ng-container>

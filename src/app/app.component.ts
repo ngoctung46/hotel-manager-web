@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   constructor(private fs: FirebaseService) {
-    this.fs.initMenu();
-    this.fs.initRooms();
+    // this.fs.initMenu();
+    // this.fs.initRooms();
   }
 }

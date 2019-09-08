@@ -9,12 +9,12 @@ import { map } from 'rxjs/operators';
 })
 export class OrderDetailsComponent implements OnInit {
   @Input() orderLines$: Observable<OrderLine[]>;
-  total$: Observable<number>;
+  total = 0;
   constructor() {}
 
   ngOnInit() {
-    this.total$ = this.orderLines$.pipe(
-      map(ols => ols.reduce((sum, current) => sum + current.total, 0))
-    );
+    this.orderLines$
+      .pipe(map(ols => ols.reduce((sum, current) => sum + current.total, 0)))
+      .subscribe(total => (this.total = total));
   }
 }

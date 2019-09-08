@@ -4,4 +4,5 @@ export interface Order {
   orderLineIds?: string[];
   customerId?: string;
   total?: number;
+  createdAt?: number;
 }

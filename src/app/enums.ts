@@ -13,5 +13,5 @@ export enum ProductType {
   Service = 1,
   Item = 2,
   Payment = 3,
-  ExtraCharge = 4,
+  ExtraCharge = 4
 }

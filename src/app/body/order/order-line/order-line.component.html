@@ -1,3 +1,4 @@
+<h4 class="text-center">Cập nhật hóa đơn</h4>
 <form [formGroup]="orderLineForm" (ngSubmit)="onSubmit()">
   <div class="form-group form-row">
     <div class="col">
@@ -42,7 +43,7 @@
     </div>
     <div class="col">
       <div class="btn-group">
-        <button type="submit" class="btn btn-outline-primary" [disabled]="!orderLineForm.valid">
+        <button type="submit" class="btn btn-outline-primary" [disabled]="orderLineForm.invalid">
           Cập nhật
         </button>
         <button
@@ -57,3 +58,4 @@
     </div>
   </div>
 </form>
+<alert *ngIf="errors" [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>

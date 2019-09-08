@@ -22,10 +22,7 @@
     </div>
     <div class="col">
       <select class="form-control" formControlName="type">
-        <option value="1">Dịch vụ</option>
-        <option value="2">Hàng hóa</option>
-        <option value="3">Thanh toán</option>
-        <option value="4">Phụ thu</option>
+        <option *ngFor="let item of items" [ngValue]="item.type">{{ item.name }}</option>
       </select>
     </div>
     <div class="col">
@@ -33,8 +30,17 @@
     </div>
     <div class="col">
       <div class="btn-group">
-        <button type="submit" class="btn btn-primary">Cập nhật</button>
-        <button type="button" class="btn btn-danger" (click)="deleteProduct()">Xóa</button>
+        <button type="submit" class="btn btn-outline-primary" [disabled]="productForm.invalid">
+          Cập nhật
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          (click)="deleteProduct()"
+          [disabled]="!productId"
+        >
+          Xóa
+        </button>
       </div>
     </div>
   </div>

@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found.component';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { AlertModule } from 'ngx-bootstrap/alert';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
     BodyModule,
     FooterModule,
     AppRoutingModule,
-    TypeaheadModule.forRoot()
+    TypeaheadModule.forRoot(),
+    AlertModule.forRoot()
   ],
   providers: [
     FirebaseService

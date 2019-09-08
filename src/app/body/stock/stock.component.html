@@ -1,0 +1,51 @@
+<h4 class="text-center">Nhập kho</h4>
+<form [formGroup]="stockForm" (ngSubmit)="onSubmit()">
+  <div class="form-group form-row">
+    <div class="col"></div>
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Tên"
+        formControlName="name"
+        [typeahead]="products"
+        typeaheadOptionField="name"
+        (typeaheadOnSelect)="onSelect($event)"
+      />
+    </div>
+    <div class="col">
+      <input type="number" class="form-control" placeholder="Nhập kho" formControlName="quantity" />
+    </div>
+    <div class="col">
+      <div class="btn-group">
+        <button
+          type="submit"
+          class="btn btn-outline-primary"
+          [disabled]="stockForm.invalid || stockForm.get('quantity').value <= 0"
+        >
+          Nhập kho
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+<table *ngIf="products.length > 0" class="table table-hover table-bordered text-center">
+  <thead class="bg-info">
+    <tr>
+      <th scope="col">STT</th>
+      <th scope="col">Tên</th>
+      <th scope="col">Diễn giải</th>
+      <th scope="col">Số lượng trong kho</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products; let i = index">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ product.name }}</td>
+      <td>{{ product.description }}</td>
+      <td [ngClass]="{ 'text-danger': product.inStock <= 10 }" class="text-primary">
+        <b>{{ product.inStock | number }}</b>
+      </td>
+    </tr>
+  </tbody>
+</table>
