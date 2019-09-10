@@ -32,7 +32,13 @@
         >
           <mat-icon>add_shopping_cart</mat-icon>
         </button>
-        <button type="button" class="btn btn-outline-success"><mat-icon>receipt</mat-icon></button>
+        <button
+          type="button"
+          class="btn btn-outline-success"
+          [routerLink]="['/receipt', room.orderId]"
+        >
+          <mat-icon>receipt</mat-icon>
+        </button>
       </div>
     </ng-template>
   </div>

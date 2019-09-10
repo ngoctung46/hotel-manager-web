@@ -1,0 +1,30 @@
+<h3 class="text-center text-primary">Hóa đơn tạm tính phòng {{ room.number }}</h3>
+<div *ngIf="orderLines$ | async; let orderLines">
+  <div *ngIf="orderLines.length > 0">
+    <h4 class="text-left text-danger">
+      Tiền nước và dịch vụ
+    </h4>
+  </div>
+</div>
+<app-order-details [orderLines$]="orderLines$"></app-order-details>
+<h4 class="text-left text-danger">Tiền phòng</h4>
+<table class="table table-hover table-bordered text-center" *ngIf="order$ | async; let order">
+  <tr class="bg-warning">
+    <td>Nhận phòng</td>
+    <td>Trả phòng</td>
+    <td>Ngày</td>
+    <td>Giờ</td>
+    <td>Phút</td>
+    <td>Giá phòng</td>
+    <td>Tổng tiền</td>
+  </tr>
+  <tr>
+    <td>{{ checkInTime }}</td>
+    <td>{{ now }}</td>
+    <td>{{ timeDiff.days }}</td>
+    <td>{{ timeDiff.hours }}</td>
+    <td>{{ timeDiff.minutes }}</td>
+    <td>{{ room.rate | number }}đ</td>
+    <td></td>
+  </tr>
+</table>

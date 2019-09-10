@@ -99,6 +99,19 @@ export class FirebaseService {
       )
     );
   }
+  getRoomById(id: string): Observable<Room> {
+    return this.rooms
+      .doc(id)
+      .snapshotChanges()
+      .pipe(
+        map(doc => {
+          const data = (doc.payload.data() as unknown) as Room;
+          console.log(JSON.stringify(data));
+          const roomId = doc.payload.id;
+          return { roomId, ...data };
+        })
+      );
+  }
 
   /** CUSTOMER */
   addCustomer(customer: Customer) {
@@ -116,6 +129,7 @@ export class FirebaseService {
   /** ORDER */
   addOrder(order: Order): string {
     const id = this.afs.createId();
+    order.total = 0;
     this.orders.doc(id).set(order);
     return id;
   }
@@ -144,7 +158,7 @@ export class FirebaseService {
     this.orderLines.doc(id).delete();
   }
 
-  getOrderLinesByOrderId(orderId: string) {
+  getOrderLinesByOrderId(orderId: string): Observable<OrderLine[]> {
     return this.afs
       .collection<OrderLine>(ORDER_LINE_COLLECTION, ref => ref.where('orderId', '==', orderId))
       .valueChanges();

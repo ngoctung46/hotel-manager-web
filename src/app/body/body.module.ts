@@ -24,6 +24,7 @@ import { ProductListComponent } from './product/product-list/product-list.compon
 import { ProductTypePipe } from './product-type.pipe';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { StockComponent } from './stock/stock.component';
+import { ReceiptComponent } from './receipt/receipt.component';
 
 defineLocale('vi', viLocale);
 @NgModule({
@@ -42,7 +43,8 @@ defineLocale('vi', viLocale);
     OrderDetailsComponent,
     ProductListComponent,
     ProductTypePipe,
-    StockComponent
+    StockComponent,
+    ReceiptComponent
   ],
   providers: [FirebaseService],
   imports: [

@@ -54,6 +54,7 @@ export class OrderLineComponent implements OnInit {
     }
     const orderLineId = this.fs.addOrderLine(this.orderLine);
     this.order.orderLineIds.push(orderLineId);
+    this.order.total = this.order.total + +this.orderLine.total;
     this.fs.updateOrder(this.order, this.orderId);
     this.fs.updateProductQty(this.product.id, qty);
   }
@@ -64,6 +65,8 @@ export class OrderLineComponent implements OnInit {
       return;
     }
     this.fs.updateOrderLine(this.orderLine, this.existedOrderLine.id);
+    this.order.total = this.order.total - this.existedOrderLine.total + this.orderLine.total;
+    this.fs.updateOrder(this.order, this.orderId);
     this.fs.updateProductQty(this.product.id, qty);
   }
 

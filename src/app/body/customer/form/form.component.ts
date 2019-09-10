@@ -87,6 +87,7 @@ export class FormComponent implements OnInit {
   addOrder() {
     const checkInTime = new Date().getTime();
     this.orderId = this.fs.addOrder({
+      roomId: this.roomId,
       customerId: this.customer.idNumber,
       checkInTime,
       orderLineIds: []
