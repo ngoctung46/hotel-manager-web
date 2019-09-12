@@ -5,7 +5,8 @@ export enum RoomType {
 
 export enum RoomStatus {
   CustomerOut = 0,
-  NeedCleaning = 1
+  NeedCleaning = 1,
+  Available = 2,
 }
 
 export enum ProductType {

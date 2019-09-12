@@ -4,11 +4,14 @@
   </div>
   <div class="card-body" [ngStyle]="{ background: room.occupied ? 'coral' : 'white' }">
     <h1 class="card-title">{{ room.number }}</h1>
-    <p class="card-text">{{ room.occupied ? 'Có Khách' : 'Trống' }}</p>
+    <p class="card-text">
+      <span>{{ room.occupied ? 'Có Khách' : 'Trống' }}</span>
+      <span *ngIf="room.occupied">- {{ room.status | roomStatus }}</span>
+    </p>
   </div>
   <div class="card-footer" style="padding: 0px">
     <button
-      title="Nhận Phòng"
+      tooltip="Nhận Phòng"
       *ngIf="!room.occupied; else elseBlock"
       class="btn btn-block btn-outline-danger"
       [routerLink]="['/customer/room', room.id]"
@@ -18,14 +21,16 @@
     <ng-template #elseBlock>
       <div class="btn-group btn-block" role="group">
         <button
+          tooltip="Thông tin khách lưu trú"
           type="button"
           class="btn btn-outline-primary"
           [routerLink]="['/customer', room.customerId]"
         >
-          <mat-icon>accessibility</mat-icon>
+          <mat-icon>face</mat-icon>
         </button>
         <button
           type="button"
+          tooltip="Thêm dịch vụ"
           class="btn btn-outline-info"
           [routerLink]="['/order', room.orderId]"
           routerLinkActive="router-link-active"
@@ -34,6 +39,23 @@
         </button>
         <button
           type="button"
+          class="btn btn-outline-info"
+          tooltip="Khách trong phòng, đi ra ngoài"
+          (click)="updateStatus()"
+        >
+          <mat-icon>transfer_within_a_station</mat-icon>
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-info"
+          tooltip="Báo cần dọn phòng, đã dọn phòng"
+          (click)="updateStatus(true)"
+        >
+          <mat-icon>room_service</mat-icon>
+        </button>
+        <button
+          type="button"
+          tooltip="Trả phòng"
           class="btn btn-outline-success"
           [routerLink]="['/receipt', room.orderId]"
         >

@@ -6,7 +6,7 @@
     </h4>
   </div>
 </div>
-<app-order-details [orderLines$]="orderLines$"></app-order-details>
+<app-order-details [orderLines$]="orderLines$" (finishEvent)="getTotal($event)"></app-order-details>
 <h4 class="text-left text-danger">Tiền phòng</h4>
 <table class="table table-hover table-bordered text-center" *ngIf="order$ | async; let order">
   <tr class="bg-warning">
@@ -19,12 +19,59 @@
     <td>Tổng tiền</td>
   </tr>
   <tr>
-    <td>{{ checkInTime }}</td>
-    <td>{{ now }}</td>
+    <td>{{ checkInTime | date: 'dd/MM/yyyy HH:mm' }}</td>
+    <td>{{ now | date: 'dd/MM/yyyy HH:mm' }}</td>
     <td>{{ timeDiff.days }}</td>
     <td>{{ timeDiff.hours }}</td>
     <td>{{ timeDiff.minutes }}</td>
     <td>{{ room.rate | number }}đ</td>
-    <td></td>
+    <td>{{ rate | number }}đ</td>
   </tr>
 </table>
+
+<h4 class="text-left text-danger">
+  Hóa đơn tổng cộng
+</h4>
+<table class="table table-hover table-bordered text-center">
+  <thead class="bg-success">
+      <tr>
+        <td>Dịch vụ</td>
+        <td>Tiền phòng</td>
+        <td>Tạm tính</td>
+        <td>Phụ thu</td>
+        <td>Giảm giá</td>
+        <td>Ghi chú</td>
+        <td><b>Thành tiền</b></td>
+      </tr>
+  </thead>
+  <tr>
+    <td>{{ total | number }}đ</td>
+    <td>{{ rate | number }}đ</td>
+    <td>{{ total + rate | number }}đ</td>
+    <td>
+      <div class="input-group input-group-sm">
+        <input type="number" class="form-control" size="9" maxlength="9" [(ngModel)]="charge" />
+      </div>
+    </td>
+    <td>
+      <div class="input-group input-group-sm">
+        <input type="number" class="form-control" [(ngModel)]="discount" />
+      </div>
+    </td>
+    <td>
+      <div class="input-group input-group-sm">
+        <input type="text" class="form-control" [(ngModel)]="note" />
+      </div>
+    </td>
+    <td>
+      <b>{{ total + rate + charge - discount | number }}</b>
+    </td>
+  </tr>
+</table>
+
+<div class="text-center">
+  <div class="btn-group">
+    <button class="btn btn-primary" [disabled]="(charge > 0 || discount > 0) && !note" (click)="submit()">OK</button>
+    <button class="btn btn-danger" (click)="cancel()">Hủy</button>
+  </div>
+</div>

@@ -30,6 +30,7 @@ export class FormComponent implements OnInit {
     phone: ''
   };
   orderId = '';
+  roomNumber = 0;
   provinces = provinces;
   countries = countries;
   customers: Customer[] = [];
@@ -43,6 +44,7 @@ export class FormComponent implements OnInit {
   ngOnInit() {
     this.localeService.use('vi');
     this.fs.getCustomers().subscribe(customers => (this.customers = customers));
+    this.fs.getRoomById(this.roomId).subscribe(room => (this.roomNumber = room.number));
     this.setForm();
   }
 
@@ -89,6 +91,7 @@ export class FormComponent implements OnInit {
     this.orderId = this.fs.addOrder({
       roomId: this.roomId,
       customerId: this.customer.idNumber,
+      roomNumber: this.roomNumber,
       checkInTime,
       orderLineIds: []
     });

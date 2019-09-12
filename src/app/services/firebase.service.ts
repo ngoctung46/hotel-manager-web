@@ -106,7 +106,6 @@ export class FirebaseService {
       .pipe(
         map(doc => {
           const data = (doc.payload.data() as unknown) as Room;
-          console.log(JSON.stringify(data));
           const roomId = doc.payload.id;
           return { roomId, ...data };
         })
@@ -139,7 +138,47 @@ export class FirebaseService {
   }
 
   getOrderById(id: string): Observable<Order> {
-    return this.orders.doc<Order>(id).valueChanges();
+    return this.orders
+      .doc<Order>(id)
+      .snapshotChanges()
+      .pipe(
+        map(doc => {
+          const data = (doc.payload.data() as unknown) as Order;
+          const orderId = doc.payload.id;
+          return { orderId, ...data };
+        })
+      );
+  }
+
+  getOrdersByDateRange(start: Date, end: Date): Observable<Order[]> {
+    const startTime = new Date(
+      start.getFullYear(),
+      start.getMonth(),
+      start.getDate(),
+      0,
+      0,
+      0
+    ).getTime();
+    const endTime = new Date(
+      end.getFullYear(),
+      end.getMonth(),
+      end.getDate(),
+      23,
+      59,
+      59
+    ).getTime();
+    const orders = this.afs.collection<Order>(ORDER_COLLECTION, ref =>
+      ref.where('checkOutTime', '>=', startTime).where('checkOutTime', '<=', endTime)
+    );
+    return orders.snapshotChanges().pipe(
+      map(actions =>
+        actions.map(a => {
+          const data = a.payload.doc.data() as Order;
+          const orderId = a.payload.doc.id;
+          return { orderId, ...data };
+        })
+      )
+    );
   }
 
   /** ORDER-LINE */

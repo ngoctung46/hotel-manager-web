@@ -1,0 +1,39 @@
+<table class="table table-sm table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Phòng</th>
+      <th scope="col">Nhận phòng</th>
+      <th scope="col">Trả phòng</th>
+      <th scope="col">Dịch vụ</th>
+      <th scope="col">Tiền phòng</th>
+      <th scope="col">Phụ thu</th>
+      <th scope="col">Giảm giá</th>
+      <th scope="col">Tổng cộng</th>
+      <th scope="col">Ghi chú</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of orders" class="align-middle">
+      <th scope="row">{{ order.roomNumber }}</th>
+      <td>{{ order.checkInTime | date: 'dd/MM HH:mm' }}</td>
+      <td>{{ order.checkOutTime | date: 'dd/MM HH:mm' }}</td>
+      <td>
+        <div class="row" *ngFor="let ol of order.orderLines">
+          <div class="col-5 text-left">{{ ol.product.name }}:</div>
+          <div class="col-7 text-right">
+            {{ ol.product.price | number }} x {{ ol.quantity | number }} = {{ ol.total | number }}
+          </div>
+        </div>
+        <div *ngIf="order.orderLines && order.orderLines.length > 2" class="row">
+          <div class="col-5"></div>
+          <div class="col-7 text-right">TC: {{ order.totalService | number }}</div>
+        </div>
+      </td>
+      <td>{{ order.roomRate | number }}đ</td>
+      <td>{{ order.charges | number }}đ</td>
+      <td>{{ order.discount | number }}đ</td>
+      <td>{{ order.total | number }}đ</td>
+      <td>{{ order.note }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Room } from 'src/app/models/room';
+import { RoomStatus } from 'src/app/enums';
 
 @Component({
   selector: 'app-room',
@@ -11,4 +12,12 @@ export class RoomComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  updateStatus(needCleaning = false) {
+    if (this.room.status === RoomStatus.Available) {
+      this.room.status = needCleaning ? RoomStatus.NeedCleaning : RoomStatus.CustomerOut;
+    } else {
+      this.room.status = RoomStatus.Available;
+    }
+  }
 }

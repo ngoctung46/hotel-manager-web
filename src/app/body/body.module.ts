@@ -11,7 +11,7 @@ import { RoomListComponent } from './home/room-list/room-list.component';
 import { FirebaseService } from '../services/firebase.service';
 import { CustomerComponent } from './customer/customer.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { BsDatepickerModule, TypeaheadModule } from 'ngx-bootstrap';
+import { BsDatepickerModule, TypeaheadModule, TooltipModule } from 'ngx-bootstrap';
 import { FormComponent } from './customer/form/form.component';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { viLocale } from 'ngx-bootstrap/locale';
@@ -25,6 +25,8 @@ import { ProductTypePipe } from './product-type.pipe';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { StockComponent } from './stock/stock.component';
 import { ReceiptComponent } from './receipt/receipt.component';
+import { RoomStatusPipe } from './room-status.pipe';
+import { ReportTableComponent } from './report/report-table/report-table.component';
 
 defineLocale('vi', viLocale);
 @NgModule({
@@ -44,7 +46,9 @@ defineLocale('vi', viLocale);
     ProductListComponent,
     ProductTypePipe,
     StockComponent,
-    ReceiptComponent
+    ReceiptComponent,
+    RoomStatusPipe,
+    ReportTableComponent
   ],
   providers: [FirebaseService],
   imports: [
@@ -55,7 +59,8 @@ defineLocale('vi', viLocale);
     BodyRoutingModule,
     BsDatepickerModule.forRoot(),
     TypeaheadModule.forRoot(),
-    AlertModule.forRoot()
+    AlertModule.forRoot(),
+    TooltipModule.forRoot()
   ]
 })
 export class BodyModule {}

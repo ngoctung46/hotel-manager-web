@@ -33,6 +33,8 @@ export class OrderLineComponent implements OnInit {
     this.fs.getOrderById(this.orderId).subscribe(order => (this.order = order));
     this.orderLineForm.get('quantity').valueChanges.subscribe(qty => {
       this.orderLineForm.get('total').setValue(qty * this.product.price);
+      const num = (this.existedOrderLine && this.existedOrderLine.quantity) || 0;
+      this.orderLineForm.get('inStock').setValue(this.product.inStock + num - qty);
     });
   }
 
@@ -81,9 +83,10 @@ export class OrderLineComponent implements OnInit {
   setForm() {
     this.orderLineForm = this.fb.group({
       name: ['', Validators.required],
-      quantity: ['', Validators.required],
-      price: ['', Validators.required],
-      total: ['', Validators.required]
+      quantity: [0, Validators.required],
+      price: [0, Validators.required],
+      total: [0, Validators.required],
+      inStock: [0]
     });
   }
   delete() {
@@ -98,6 +101,7 @@ export class OrderLineComponent implements OnInit {
   updateForm() {
     if (this.product) {
       this.orderLineForm.get('price').setValue(this.product.price);
+      this.orderLineForm.get('inStock').setValue(this.product.inStock);
       const qtyCtrl = this.orderLineForm.get('quantity');
       if (this.existedOrderLine) {
         qtyCtrl.setValue(this.existedOrderLine.quantity);

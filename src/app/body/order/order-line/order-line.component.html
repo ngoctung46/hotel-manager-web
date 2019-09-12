@@ -1,6 +1,6 @@
 <h4 class="text-center">Cập nhật hóa đơn</h4>
 <form [formGroup]="orderLineForm" (ngSubmit)="onSubmit()">
-  <div class="form-group form-row">
+  <div class="form-group form-row align-items-center">
     <div class="col">
       <input
         type="text"
@@ -13,33 +13,59 @@
       />
     </div>
     <div class="col">
-      <input
-        type="number"
-        class="form-control"
-        placeholder="Số lượng"
-        formControlName="quantity"
-        [readonly]="product == null"
-      />
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Số lượng</div>
+        </div>
+        <input
+          type="number"
+          class="form-control"
+          formControlName="quantity"
+          [readonly]="product == null"
+        />
+      </div>
     </div>
     <div class="col">
-      <input
-        type="text"
-        [value]="orderLineForm.get('price').value | number"
-        class="form-control"
-        placeholder="Giá"
-        formControlName="price"
-        readonly
-      />
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Giá</div>
+        </div>
+        <input
+          type="text"
+          [value]="orderLineForm.get('price').value | number"
+          class="form-control"
+          formControlName="price"
+          readonly
+        />
+      </div>
     </div>
     <div class="col">
-      <input
-        type="text"
-        [value]="orderLineForm.get('total').value | number"
-        class="form-control"
-        placeholder="Thành tiền"
-        formControlName="total"
-        readonly
-      />
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">TC</div>
+        </div>
+        <input
+          type="text"
+          [value]="orderLineForm.get('total').value | number"
+          class="form-control"
+          formControlName="total"
+          readonly
+        />
+      </div>
+    </div>
+    <div class="col">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Tồn kho</div>
+        </div>
+        <input
+          type="text"
+          [value]="orderLineForm.get('inStock').value | number"
+          class="form-control"
+          formControlName="inStock"
+          readonly
+        />
+      </div>
     </div>
     <div class="col">
       <div class="btn-group">
