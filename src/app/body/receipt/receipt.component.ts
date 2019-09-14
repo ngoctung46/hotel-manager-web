@@ -89,7 +89,7 @@ export class ReceiptComponent implements OnInit {
     if (timeDiff.hours >= 5) {
       return this.room.rate;
     }
-    if (timeDiff.minutes > 30 && index > 0) {
+    if (timeDiff.minutes > 30 && timeDiff.hours > 0) {
       index++;
     }
     return this.room.type === RoomType.Single ? RATES[index].single : RATES[index].double;

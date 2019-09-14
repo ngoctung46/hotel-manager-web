@@ -6,6 +6,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { BsDropdownModule } from 'ngx-bootstrap';
 @NgModule({
   declarations: [],
   imports: [
@@ -15,7 +16,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     MatGridListModule,
     MatTableModule,
     MatIconModule,
-    TooltipModule
+    TooltipModule,
+    BsDropdownModule
   ],
   exports: [
     MatButtonModule,
@@ -24,7 +26,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     MatGridListModule,
     MatTableModule,
     MatIconModule,
-    TooltipModule
+    TooltipModule,
+    BsDropdownModule
   ]
 })
 export class MaterialModule {}

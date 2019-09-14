@@ -1,0 +1,13 @@
+<div class="input-group mb-3">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Nhập nội dung"
+    [(ngModel)]="note.content"
+    aria-label="Nhập nội dung"
+    aria-describedby="basic-addon2"
+  />
+  <div class="input-group-append">
+    <button class="btn btn-outline-primary" (click)="save()" type="button">Lưu</button>
+  </div>
+</div>

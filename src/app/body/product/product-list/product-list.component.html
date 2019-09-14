@@ -15,7 +15,9 @@
         <td>{{ product.name }}</td>
         <td>{{ product.description }}</td>
         <td>{{ product.type | productType }}</td>
-        <td>{{ product.price | number }}đ</td>
+        <td>
+          <span *ngIf="product.price">{{ product.price | number }}đ</span>
+        </td>
       </tr>
     </tbody>
   </table>

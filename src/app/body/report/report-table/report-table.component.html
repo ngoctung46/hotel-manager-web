@@ -1,6 +1,7 @@
+<h4 class="text-info text-center">Báo cáo chi tiết</h4>
 <table class="table table-sm table-bordered">
   <thead>
-    <tr>
+    <tr class="text-center bg-info">
       <th scope="col">Phòng</th>
       <th scope="col">Nhận phòng</th>
       <th scope="col">Trả phòng</th>
@@ -8,32 +9,48 @@
       <th scope="col">Tiền phòng</th>
       <th scope="col">Phụ thu</th>
       <th scope="col">Giảm giá</th>
-      <th scope="col">Tổng cộng</th>
+      <th scope="col" class="text-right">Tổng cộng</th>
       <th scope="col">Ghi chú</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let order of orders" class="align-middle">
-      <th scope="row">{{ order.roomNumber }}</th>
+      <th scope="row" class="text-center">{{ order.roomNumber }}</th>
       <td>{{ order.checkInTime | date: 'dd/MM HH:mm' }}</td>
       <td>{{ order.checkOutTime | date: 'dd/MM HH:mm' }}</td>
       <td>
         <div class="row" *ngFor="let ol of order.orderLines">
-          <div class="col-5 text-left">{{ ol.product.name }}:</div>
-          <div class="col-7 text-right">
-            {{ ol.product.price | number }} x {{ ol.quantity | number }} = {{ ol.total | number }}
+          <div class="col-4 text-left">{{ ol.product.name }}:</div>
+          <div class="col-4 text-center">{{ ol.price | number }} x {{ ol.quantity | number }}</div>
+          <div class="col-4 text-right">
+            <b>{{ ol.total | number }}đ</b>
           </div>
         </div>
-        <div *ngIf="order.orderLines && order.orderLines.length > 2" class="row">
+        <div *ngIf="order.orderLines && order.orderLines.length > 1" class="row">
           <div class="col-5"></div>
-          <div class="col-7 text-right">TC: {{ order.totalService | number }}</div>
+          <div class="col-7 text-right">
+            <b>TC: {{ order.totalService | number }}đ</b>
+          </div>
         </div>
       </td>
-      <td>{{ order.roomRate | number }}đ</td>
-      <td>{{ order.charges | number }}đ</td>
-      <td>{{ order.discount | number }}đ</td>
-      <td>{{ order.total | number }}đ</td>
+      <th class="text-right">{{ order.roomRate | number }}đ</th>
+      <th class="text-right">
+        <span *ngIf="order.charges > 0">{{ order.charges | number }}đ</span>
+      </th>
+      <th class="text-right">
+        <span *ngIf="order.charges > 0">{{ order.discount | number }}đ</span>
+      </th>
+      <th class="text-right">{{ order.total | number }}đ</th>
       <td>{{ order.note }}</td>
+    </tr>
+    <tr class="text-right">
+      <th colspan="3" class="text-right">Tổng:</th>
+      <th>{{ total.services | number }}đ</th>
+      <th>{{ total.rates | number }}đ</th>
+      <th>{{ total.charges | number }}đ</th>
+      <th>{{ total.discounts | number }}đ</th>
+      <th>{{ total.all | number }}đ</th>
+      <th></th>
     </tr>
   </tbody>
 </table>

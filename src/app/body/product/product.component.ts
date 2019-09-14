@@ -34,15 +34,21 @@ export class ProductComponent implements OnInit {
     this.setForm();
     this.resetForm();
     this.fs.getProducts().subscribe(products => (this.products = products));
+    this.productForm.get('type').valueChanges.subscribe(type => {
+      if (type === ProductType.ExtraCharge || type === ProductType.Payment) {
+        this.productForm.get('price').disable();
+      } else {
+        this.productForm.get('price').enable();
+      }
+    });
   }
   onSubmit() {
+    if (this.productForm.get('type').value !== ProductType.Item) {
+      this.productForm.get('inStock').disable();
+    } else {
+      this.productForm.get('inStock').setValue(0);
+    }
     this.product = this.productForm.value as Product;
-    if (this.product.type === ProductType.Payment) {
-      this.product.price = -this.product.price;
-    }
-    if (this.product.type === ProductType.Item) {
-      this.product.inStock = 0;
-    }
     if (this.productId) {
       this.updateProduct();
     } else {

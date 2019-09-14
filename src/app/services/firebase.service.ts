@@ -5,10 +5,12 @@ import { tap, map } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Room } from '../models/room';
 import { Customer } from '../models/customer';
-import { RoomType } from '../enums';
+import { RoomType, RoomStatus } from '../enums';
 import { Order } from '../models/order';
 import { Product } from '../models/product';
 import { OrderLine } from '../models/order-line';
+import { Expense } from '../models/expense';
+import { Note } from '../models/note';
 
 const MENU_COLLECTION = 'menu-items';
 const ROOM_COLLECTION = 'rooms';
@@ -16,6 +18,9 @@ const CUSTOMER_COLLECTION = 'customers';
 const ORDER_COLLECTION = 'orders';
 const PRODUCT_COLLECTION = 'products';
 const ORDER_LINE_COLLECTION = 'order-lines';
+const EXPENSE_COLLECTION = 'expenses';
+const NOTE_COLLECTION = 'notes';
+const NOTE_ID = 'hoanglong.note.id';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,6 +31,8 @@ export class FirebaseService {
   private orders: AngularFirestoreCollection<Order>;
   private products: AngularFirestoreCollection<Product>;
   private orderLines: AngularFirestoreCollection<OrderLine>;
+  private expenses: AngularFirestoreCollection<Expense>;
+  private notes: AngularFirestoreCollection<Note>;
   constructor(private afs: AngularFirestore) {
     this.menuItems = afs.collection(MENU_COLLECTION);
     this.rooms = afs.collection(ROOM_COLLECTION);
@@ -33,6 +40,8 @@ export class FirebaseService {
     this.orders = afs.collection(ORDER_COLLECTION);
     this.products = afs.collection(PRODUCT_COLLECTION);
     this.orderLines = afs.collection(ORDER_LINE_COLLECTION);
+    this.expenses = afs.collection(EXPENSE_COLLECTION);
+    this.notes = afs.collection(NOTE_COLLECTION);
   }
 
   initMenu() {
@@ -43,6 +52,8 @@ export class FirebaseService {
         this.addMenuItem({ displayName: 'Thu chi', path: '/expense', order: 2 });
         this.addMenuItem({ displayName: 'Dịch vụ', path: '/product', order: 3 });
         this.addMenuItem({ displayName: 'Nhập kho', path: '/stock', order: 4 });
+        this.addMenuItem({ displayName: 'Đặt phòng', path: '/booking', order: 5 });
+        this.addMenuItem({ displayName: 'Ghi chú', path: '/note', order: 4 });
       }
     });
   }
@@ -86,6 +97,11 @@ export class FirebaseService {
 
   updateRoom(id: string, obj: any) {
     this.rooms.doc(id).update(obj);
+  }
+
+  updateRoomStatus(id: string, status: RoomStatus) {
+    const item = { status };
+    this.rooms.doc(id).update(item);
   }
 
   getRooms(): Observable<Room[]> {
@@ -258,5 +274,81 @@ export class FirebaseService {
   }
   deleteProduct(id: string) {
     this.products.doc(id).delete();
+  }
+
+  // EXPENSE
+  addExpense(expense: Expense): string {
+    const id = this.afs.createId();
+    expense.createdAt = new Date().getTime();
+    this.expenses.doc(id).set(expense);
+    return id;
+  }
+  updateExpense(expense: Expense) {
+    this.expenses.doc(expense.expenseId).update(expense);
+  }
+  deleteExpense(id: string) {
+    this.expenses.doc(id).delete();
+  }
+  getExpenseById(id: string): Observable<Expense> {
+    return this.expenses
+      .doc<Expense>(id)
+      .snapshotChanges()
+      .pipe(
+        map(doc => {
+          const data = (doc.payload.data() as unknown) as Expense;
+          const expenseId = doc.payload.id;
+          return { expenseId, ...data };
+        })
+      );
+  }
+  getExpenses(): Observable<Expense[]> {
+    return this.expenses.snapshotChanges().pipe(
+      map(actions =>
+        actions.map(a => {
+          const data = a.payload.doc.data() as Expense;
+          const expenseId = a.payload.doc.id;
+          return { expenseId, ...data };
+        })
+      )
+    );
+  }
+  getExpensesByDateRange(start: Date, end: Date): Observable<Expense[]> {
+    const startTime = new Date(
+      start.getFullYear(),
+      start.getMonth(),
+      start.getDate(),
+      0,
+      0,
+      0
+    ).getTime();
+    const endTime = new Date(
+      end.getFullYear(),
+      end.getMonth(),
+      end.getDate(),
+      23,
+      59,
+      59
+    ).getTime();
+    const orders = this.afs.collection<Expense>(EXPENSE_COLLECTION, ref =>
+      ref.where('createdAt', '>=', startTime).where('createdAt', '<=', endTime)
+    );
+    return orders.snapshotChanges().pipe(
+      map(actions =>
+        actions.map(a => {
+          const data = a.payload.doc.data() as Expense;
+          const expenseId = a.payload.doc.id;
+          return { expenseId, ...data };
+        })
+      )
+    );
+  }
+
+  // NOTES
+  updateNote(content: string) {
+    this.notes.doc(NOTE_ID).set({ content });
+  }
+
+  getNote(): Observable<Note> {
+    return this.notes.doc(NOTE_ID).valueChanges();
   }
 }

@@ -1,33 +1,41 @@
-<div *ngIf="customer$ | async; let customer">
-  <h1 class="text-center text-primary">Thông tin khách lưu trú</h1>
-  <div class="row">
-    <div class="col border bg-light">
-      <b>Họ và tên:</b> {{ customer.lastName }} {{ customer.firstName }}
+<section
+  *ngIf="customer$ | async; let customer"
+  class="resume-section p-3 p-lg-5 d-flex align-items-center"
+  id="about"
+>
+  <div class="w-100">
+    <h1 class="mb-0">
+      {{ customer.lastName }}
+      <span class="text-primary">{{ customer.firstName }}</span>
+    </h1>
+    <div class="lead mb-3 text-success">
+      {{ customer.addressLine1 }} · {{ customer.addressLine2 }}, {{ customer.city }},
+      {{ customer.country }} · ĐT: {{ customer.phone }} ·
     </div>
-    <div class="col border bg-light">
-      <b>Ngày sinh:</b> {{ customer.birthDate.toDate() | date: 'dd/MM/yyyy' }}
+    <div class="lead mb-5">
+      <div class="row">
+        <div class="col">
+          <b>Ngày sinh:</b> {{ customer.birthDate.toDate() | date: 'dd/MM/yyyy' }}
+        </div>
+        <div class="col"><b>Nơi sinh:</b> {{ customer.birthPlace }}</div>
+        <div class="col">
+          <b></b>
+        </div>
+        <div class="col"></div>
+      </div>
+      <div class="row">
+        <div class="col"><b>CMND số: </b>{{ customer.idNumber }}</div>
+        <div class="col">
+          <b>Ngày cấp: </b>{{ customer.issuedDate.toDate() | date: 'dd/MM/yyyy' }}
+        </div>
+        <div class="col">
+          <b>Ngày hết hạn: </b>{{ customer.expiredDate.toDate() | date: 'dd/MM/yyyy' }}
+        </div>
+        <div class="col"><b>Nơi cấp: </b>{{ customer.issuedPlace }}</div>
+      </div>
     </div>
-    <div class="border bg-light"><b>Nơi sinh:</b> {{ customer.birthPlace }}</div>
-    <div class="border bg-light"></div>
   </div>
-  <div class="row">
-    <div class="col border bg-light"><b>CMND/HC số:</b> {{ customer.idNumber }}</div>
-    <div class="col border bg-light">
-      <b>Ngày cấp:</b> {{ customer.issuedDate.toDate() | date: 'dd/MM/yyyy' }}
-    </div>
-    <div class="col border bg-light">
-      <b>Ngày hết hạn: </b> {{ customer.expiredDate.toDate() | date: 'dd/MM/yyyy' }}
-    </div>
-    <div class="col border bg-light"><b>Nơi cấp: </b> {{ customer.issuedPlace }}</div>
-  </div>
-  <div class="row">
-    <div class="col border bg-light">
-      <b>Địa chỉ:</b> {{ customer.addressLine1 }}, {{ customer.addressLine2 }}, {{ customer.city }},
-      {{ customer.country }}
-    </div>
-    <div class="col border bg-light"><b>Điện thoại: </b> {{ customer.phone }}</div>
-  </div>
-  <div class="text-center">
-    <button class="btn btn-outline-primary" (click)="goBack()">Quay về</button>
-  </div>
+</section>
+<div class="text-center">
+  <button class="btn btn-outline-primary" (click)="goBack()">Quay về</button>
 </div>

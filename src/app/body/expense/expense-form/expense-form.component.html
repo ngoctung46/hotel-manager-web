@@ -1,0 +1,50 @@
+<form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" style="padding: 10px">
+  <div class="form-row">
+    <div class="col">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Tên</div>
+        </div>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="name"
+          [typeahead]="expenses"
+          typeaheadOptionField="name"
+          (typeaheadOnSelect)="onSelect($event)"
+          autofocus
+        />
+      </div>
+    </div>
+    <div class="col">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Số tiền</div>
+        </div>
+        <input type="number" class="form-control" formControlName="amount" [readOnly]="expense" />
+      </div>
+    </div>
+    <div class="col">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Loại</div>
+        </div>
+        <select class="form-control" formControlName="type">
+          <option *ngFor="let item of items" [ngValue]="item.value">{{ item.name }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col">
+      <div class="btn-group">
+        <button
+          type="submit"
+          class="btn btn-outline-primary"
+          [disabled]="expenseForm.invalid || expense"
+        >
+          Thêm
+        </button>
+        <button type="button" class="btn btn-outline-danger" [disabled]="!expense" (click)="delete();">Xóa</button>
+      </div>
+    </div>
+  </div>
+</form>

@@ -11,7 +11,12 @@ import { RoomListComponent } from './home/room-list/room-list.component';
 import { FirebaseService } from '../services/firebase.service';
 import { CustomerComponent } from './customer/customer.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { BsDatepickerModule, TypeaheadModule, TooltipModule } from 'ngx-bootstrap';
+import {
+  BsDatepickerModule,
+  TypeaheadModule,
+  TooltipModule,
+  BsDropdownModule
+} from 'ngx-bootstrap';
 import { FormComponent } from './customer/form/form.component';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { viLocale } from 'ngx-bootstrap/locale';
@@ -27,6 +32,11 @@ import { StockComponent } from './stock/stock.component';
 import { ReceiptComponent } from './receipt/receipt.component';
 import { RoomStatusPipe } from './room-status.pipe';
 import { ReportTableComponent } from './report/report-table/report-table.component';
+import { ExpenseComponent } from './expense/expense.component';
+import { ExpenseFormComponent } from './expense/expense-form/expense-form.component';
+import { ExpenseListComponent } from './expense/expense-list/expense-list.component';
+import { NoteComponent } from './home/note/note.component';
+import { NoteFormComponent } from './home/note/note-form/note-form.component';
 
 defineLocale('vi', viLocale);
 @NgModule({
@@ -48,7 +58,12 @@ defineLocale('vi', viLocale);
     StockComponent,
     ReceiptComponent,
     RoomStatusPipe,
-    ReportTableComponent
+    ReportTableComponent,
+    ExpenseComponent,
+    ExpenseFormComponent,
+    ExpenseListComponent,
+    NoteComponent,
+    NoteFormComponent
   ],
   providers: [FirebaseService],
   imports: [
@@ -60,7 +75,8 @@ defineLocale('vi', viLocale);
     BsDatepickerModule.forRoot(),
     TypeaheadModule.forRoot(),
     AlertModule.forRoot(),
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    BsDropdownModule.forRoot()
   ]
 })
 export class BodyModule {}

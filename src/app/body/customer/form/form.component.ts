@@ -4,6 +4,7 @@ import { BsLocaleService, TypeaheadMatch } from 'ngx-bootstrap';
 import { provinces, countries } from 'src/app/models/const';
 import { Customer } from 'src/app/models/customer';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { RoomStatus } from 'src/app/enums';
 
 @Component({
   selector: 'app-form',
@@ -100,7 +101,8 @@ export class FormComponent implements OnInit {
     this.fs.updateRoom(this.roomId, {
       customerId: this.customer.idNumber,
       orderId: this.orderId,
-      occupied: true
+      occupied: true,
+      status: RoomStatus.Clean
     });
   }
 }

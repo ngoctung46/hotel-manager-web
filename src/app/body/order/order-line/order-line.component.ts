@@ -5,6 +5,7 @@ import { Product } from 'src/app/models/product';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { OrderLine } from 'src/app/models/order-line';
 import { Order } from 'src/app/models/order';
+import { ProductType } from 'src/app/enums';
 
 @Component({
   selector: 'app-order-line',
@@ -20,11 +21,13 @@ export class OrderLineComponent implements OnInit {
   product: Product;
   products: Product[] = [];
   errors: string;
+  isOpenPrice: boolean;
   alert = {
     type: 'danger',
     timeout: 3000,
     msg: 'Không đủ hàng trong kho'
   };
+  found = false;
   constructor(private fb: FormBuilder, private fs: FirebaseService) {}
 
   ngOnInit() {
@@ -34,7 +37,13 @@ export class OrderLineComponent implements OnInit {
     this.orderLineForm.get('quantity').valueChanges.subscribe(qty => {
       this.orderLineForm.get('total').setValue(qty * this.product.price);
       const num = (this.existedOrderLine && this.existedOrderLine.quantity) || 0;
-      this.orderLineForm.get('inStock').setValue(this.product.inStock + num - qty);
+      if (this.product.type === ProductType.Item) {
+        this.orderLineForm.get('inStock').setValue(this.product.inStock + num - qty);
+      }
+    });
+    this.orderLineForm.get('price').valueChanges.subscribe(price => {
+      const qty = this.orderLineForm.get('quantity').value;
+      this.orderLineForm.get('total').setValue(qty * -price);
     });
   }
 
@@ -49,35 +58,49 @@ export class OrderLineComponent implements OnInit {
   }
 
   addOrderLine() {
-    const qty = this.product.inStock - this.orderLine.quantity;
-    if (qty < 0) {
-      this.errors = 'Không đủ số lượng trong kho';
-      return;
+    if (this.product.type === ProductType.Item) {
+      const qty = this.product.inStock - this.orderLine.quantity;
+      if (qty < 0) {
+        this.errors = 'Không đủ số lượng trong kho';
+        return;
+      }
+      this.fs.updateProductQty(this.product.id, qty);
     }
     const orderLineId = this.fs.addOrderLine(this.orderLine);
     this.order.orderLineIds.push(orderLineId);
     this.order.total = this.order.total + +this.orderLine.total;
     this.fs.updateOrder(this.order, this.orderId);
-    this.fs.updateProductQty(this.product.id, qty);
   }
   updateOrderLine() {
-    const qty = this.product.inStock + +this.existedOrderLine.quantity - this.orderLine.quantity;
-    if (qty < 0) {
-      this.errors = 'Không đủ số lượng trong kho';
-      return;
+    let qty = 0;
+    if (this.product.type === ProductType.Item) {
+      qty = this.product.inStock + +this.existedOrderLine.quantity - this.orderLine.quantity;
+      this.fs.updateProductQty(this.product.id, qty);
+      if (qty < 0) {
+        this.errors = 'Không đủ số lượng trong kho';
+        return;
+      }
     }
     this.fs.updateOrderLine(this.orderLine, this.existedOrderLine.id);
     this.order.total = this.order.total - this.existedOrderLine.total + this.orderLine.total;
     this.fs.updateOrder(this.order, this.orderId);
-    this.fs.updateProductQty(this.product.id, qty);
   }
 
   onSelect(event: TypeaheadMatch) {
     this.product = (event.item as unknown) as Product;
+    if (
+      this.product.type === ProductType.Payment ||
+      this.product.type === ProductType.ExtraCharge
+    ) {
+      this.isOpenPrice = true;
+    } else {
+      this.isOpenPrice = false;
+    }
     this.fs.getOrderLineByProductIdAndOrderId(this.product.id, this.orderId).subscribe(ol => {
       this.existedOrderLine = ol;
       this.updateForm();
     });
+    this.found = true;
   }
 
   setForm() {
@@ -113,12 +136,14 @@ export class OrderLineComponent implements OnInit {
 
   setOrderLine() {
     const ol = this.orderLineForm.value;
+    const price = this.product.type === ProductType.Payment ? -ol.price : ol.price;
     this.orderLine = {
       product: this.product,
       orderId: this.orderId,
       productId: this.product.id,
       quantity: ol.quantity,
-      total: ol.total
+      total: ol.total,
+      price
     };
   }
   resetForm() {
@@ -126,5 +151,6 @@ export class OrderLineComponent implements OnInit {
     this.orderLine = null;
     this.product = null;
     this.existedOrderLine = null;
+    this.isOpenPrice = false;
   }
 }

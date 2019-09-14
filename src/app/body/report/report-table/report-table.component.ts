@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Order } from 'src/app/models/order';
 import { Room } from 'src/app/models/room';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { Total } from 'src/app/models/total';
 
 @Component({
   selector: 'app-report-table',
@@ -10,6 +11,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 })
 export class ReportTableComponent implements OnInit {
   @Input() orders: Order[] = [];
+  @Input() total: Total = {};
   room: Room;
   constructor(private fs: FirebaseService) {}
 

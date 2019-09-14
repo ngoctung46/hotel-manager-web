@@ -9,4 +9,5 @@ export interface OrderLine {
   quantity: number;
   total: number;
   createdAt?: number;
+  price?: number;
 }

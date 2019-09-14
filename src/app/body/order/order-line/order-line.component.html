@@ -10,6 +10,7 @@
         [typeahead]="products"
         typeaheadOptionField="name"
         (typeaheadOnSelect)="onSelect($event)"
+        autofocus
       />
     </div>
     <div class="col">
@@ -30,13 +31,7 @@
         <div class="input-group-prepend">
           <div class="input-group-text">Giá</div>
         </div>
-        <input
-          type="text"
-          [value]="orderLineForm.get('price').value | number"
-          class="form-control"
-          formControlName="price"
-          readonly
-        />
+        <input type="text" class="form-control" formControlName="price" [readonly]="!isOpenPrice" />
       </div>
     </div>
     <div class="col">
@@ -69,13 +64,17 @@
     </div>
     <div class="col">
       <div class="btn-group">
-        <button type="submit" class="btn btn-outline-primary" [disabled]="orderLineForm.invalid">
+        <button
+          type="submit"
+          class="btn btn-outline-primary"
+          [disabled]="orderLineForm.invalid || !found"
+        >
           Cập nhật
         </button>
         <button
           type="button"
           class="btn btn-outline-danger"
-          [disabled]="existedOrderLine == null"
+          [disabled]="existedOrderLine == null || !found"
           (click)="delete()"
         >
           Xóa

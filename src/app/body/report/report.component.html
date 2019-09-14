@@ -8,8 +8,9 @@
     class="form-control"
     placeholder="Từ ngày - Đến ngày"
     bsDaterangepicker
+    [(ngModel)]="bsRangeValue"
     [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
     (bsValueChange)="onValueChange($event)"
   />
 </div>
-<app-report-table *ngIf="orders.length > 0" [orders]="orders"></app-report-table>
+<app-report-table *ngIf="orders.length > 0" [orders]="orders" [total]="total"></app-report-table>

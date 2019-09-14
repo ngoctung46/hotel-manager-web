@@ -6,7 +6,7 @@ export enum RoomType {
 export enum RoomStatus {
   CustomerOut = 0,
   NeedCleaning = 1,
-  Available = 2,
+  Clean = 2
 }
 
 export enum ProductType {
@@ -15,4 +15,9 @@ export enum ProductType {
   Item = 2,
   Payment = 3,
   ExtraCharge = 4
+}
+
+export enum ExpenseType {
+  Receipt = 0,
+  Payment = 1
 }
