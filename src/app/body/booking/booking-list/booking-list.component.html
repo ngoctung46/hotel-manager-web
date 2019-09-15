@@ -1,0 +1,26 @@
+<ng-container *ngIf="bookings$ | async; let bookings">
+  <table *ngIf="bookings.length > 0" class="table table-hover table-bordered text-center">
+    <thead class="bg-info">
+      <tr>
+        <th scope="col">STT</th>
+        <th scope="col">Tên khách</th>
+        <th scope="col">Điện thoại</th>
+        <th scope="col">Ngày nhận</th>
+        <th scope="col">Giờ nhận</th>
+        <th scope="col">Loại phòng</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let booking of bookings; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ booking.name }}</td>
+        <td>{{ booking.phone }}</td>
+        <td>{{ booking.date | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ booking.time | date: 'HH:mm' }}</td>
+        <td>{{ booking.type === 0 ? 'Phòng đơn' : 'Phòng đôi' }}</td>
+        <td><button class="btn-primary" (click)="done(booking)">Đã nhận phòng</button></td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>

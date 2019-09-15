@@ -10,6 +10,7 @@ import { StockComponent } from './stock/stock.component';
 import { ReceiptComponent } from './receipt/receipt.component';
 import { ExpenseComponent } from './expense/expense.component';
 import { NoteComponent } from './home/note/note.component';
+import { BookingComponent } from './booking/booking.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
       { path: 'stock', component: StockComponent },
       { path: 'expense', component: ExpenseComponent },
       { path: 'note', component: NoteComponent },
+      { path: 'booking', component: BookingComponent },
       { path: 'order/:id', component: OrderComponent },
       { path: 'receipt/:id', component: ReceiptComponent },
       { path: 'customer/:id', component: CustomerComponent },

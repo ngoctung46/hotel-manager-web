@@ -3,6 +3,9 @@ import { Order } from 'src/app/models/order';
 import { Room } from 'src/app/models/room';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { Total } from 'src/app/models/total';
+import { Observable } from 'rxjs';
+import { Expense } from 'src/app/models/expense';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-report-table',
@@ -12,12 +15,10 @@ import { Total } from 'src/app/models/total';
 export class ReportTableComponent implements OnInit {
   @Input() orders: Order[] = [];
   @Input() total: Total = {};
+  @Input() totalExpense = 0;
   room: Room;
+  expenses$: Observable<Expense[]>;
   constructor(private fs: FirebaseService) {}
 
-  ngOnInit() {
-    for (const order of this.orders) {
-      this.fs.getOrderLinesByOrderId(order.orderId).subscribe(ols => (order.orderLines = ols));
-    }
-  }
+  ngOnInit() {}
 }

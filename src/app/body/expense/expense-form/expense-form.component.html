@@ -6,13 +6,13 @@
           <div class="input-group-text">Tên</div>
         </div>
         <input
+          #name
           type="text"
           class="form-control"
           formControlName="name"
           [typeahead]="expenses"
           typeaheadOptionField="name"
           (typeaheadOnSelect)="onSelect($event)"
-          autofocus
         />
       </div>
     </div>

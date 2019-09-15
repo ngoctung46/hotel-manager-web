@@ -9,8 +9,8 @@
       <th scope="col">Tiền phòng</th>
       <th scope="col">Phụ thu</th>
       <th scope="col">Giảm giá</th>
-      <th scope="col" class="text-right">Tổng cộng</th>
       <th scope="col">Ghi chú</th>
+      <th scope="col" class="text-right">Thành tiền</th>
     </tr>
   </thead>
   <tbody>
@@ -19,38 +19,48 @@
       <td>{{ order.checkInTime | date: 'dd/MM HH:mm' }}</td>
       <td>{{ order.checkOutTime | date: 'dd/MM HH:mm' }}</td>
       <td>
-        <div class="row" *ngFor="let ol of order.orderLines">
+        <div class="row" *ngFor="let ol of order.orderLines | async">
           <div class="col-4 text-left">{{ ol.product.name }}:</div>
           <div class="col-4 text-center">{{ ol.price | number }} x {{ ol.quantity | number }}</div>
           <div class="col-4 text-right">
             <b>{{ ol.total | number }}đ</b>
           </div>
         </div>
-        <div *ngIf="order.orderLines && order.orderLines.length > 1" class="row">
-          <div class="col-5"></div>
-          <div class="col-7 text-right">
-            <b>TC: {{ order.totalService | number }}đ</b>
+        <div *ngIf="order.orderLines | async; let orderLines">
+          <div *ngIf="orderLines.length > 1" class="row">
+            <div class="col-5"></div>
+            <div class="col-7 text-right">
+              <b>TC: {{ order.totalService | number }}đ</b>
+            </div>
           </div>
         </div>
       </td>
-      <th class="text-right">{{ order.roomRate | number }}đ</th>
-      <th class="text-right">
+      <td class="text-right">{{ order.roomRate | number }}đ</td>
+      <td class="text-right">
         <span *ngIf="order.charges > 0">{{ order.charges | number }}đ</span>
-      </th>
-      <th class="text-right">
+      </td>
+      <td class="text-right">
         <span *ngIf="order.charges > 0">{{ order.discount | number }}đ</span>
-      </th>
-      <th class="text-right">{{ order.total | number }}đ</th>
+      </td>
       <td>{{ order.note }}</td>
+      <th class="text-right">{{ order.total | number }}đ</th>
     </tr>
-    <tr class="text-right">
-      <th colspan="3" class="text-right">Tổng:</th>
+    <tr class="text-right text-danger">
+      <th colspan="3">Tổng:</th>
       <th>{{ total.services | number }}đ</th>
       <th>{{ total.rates | number }}đ</th>
       <th>{{ total.charges | number }}đ</th>
       <th>{{ total.discounts | number }}đ</th>
-      <th>{{ total.all | number }}đ</th>
       <th></th>
+      <th>{{ total.all | number }}đ</th>
+    </tr>
+    <tr *ngIf="totalExpense !== 0" class="text-right text-danger">
+      <th colspan="8">Tổng Thu - Chi</th>
+      <th>{{ totalExpense | number }}đ</th>
+    </tr>
+    <tr class="text-right text-danger">
+      <th colspan="8">Tiền mặt hiện có</th>
+      <th>{{ total.all + totalExpense | number }}đ</th>
     </tr>
   </tbody>
 </table>

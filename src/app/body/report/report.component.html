@@ -1,4 +1,4 @@
-<div class="input-group mb-3">
+<div class="input-group mb-3" style="padding: 10px">
   <div class="input-group-prepend">
     <span class="input-group-text" id="date-range">Chọn ngày</span>
   </div>
@@ -13,4 +13,9 @@
     (bsValueChange)="onValueChange($event)"
   />
 </div>
-<app-report-table *ngIf="orders.length > 0" [orders]="orders" [total]="total"></app-report-table>
+<app-report-table
+  *ngIf="orders.length > 0"
+  [orders]="orders"
+  [total]="total"
+  [totalExpense]="totalExpense"
+></app-report-table>

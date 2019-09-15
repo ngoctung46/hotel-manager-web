@@ -11,6 +11,8 @@ import { RoomListComponent } from './home/room-list/room-list.component';
 import { FirebaseService } from '../services/firebase.service';
 import { CustomerComponent } from './customer/customer.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+
 import {
   BsDatepickerModule,
   TypeaheadModule,
@@ -37,6 +39,10 @@ import { ExpenseFormComponent } from './expense/expense-form/expense-form.compon
 import { ExpenseListComponent } from './expense/expense-list/expense-list.component';
 import { NoteComponent } from './home/note/note.component';
 import { NoteFormComponent } from './home/note/note-form/note-form.component';
+import { BookingFormComponent } from './booking/booking-form/booking-form.component';
+import { BookingComponent } from './booking/booking.component';
+import { BookingListComponent } from './booking/booking-list/booking-list.component';
+import { BookingNoteComponent } from './home/note/booking-note/booking-note.component';
 
 defineLocale('vi', viLocale);
 @NgModule({
@@ -63,7 +69,11 @@ defineLocale('vi', viLocale);
     ExpenseFormComponent,
     ExpenseListComponent,
     NoteComponent,
-    NoteFormComponent
+    NoteFormComponent,
+    BookingFormComponent,
+    BookingComponent,
+    BookingListComponent,
+    BookingNoteComponent
   ],
   providers: [FirebaseService],
   imports: [
@@ -76,7 +86,8 @@ defineLocale('vi', viLocale);
     TypeaheadModule.forRoot(),
     AlertModule.forRoot(),
     TooltipModule.forRoot(),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    TimepickerModule.forRoot()
   ]
 })
 export class BodyModule {}

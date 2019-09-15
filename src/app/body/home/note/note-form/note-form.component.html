@@ -1,13 +1,26 @@
-<div class="input-group mb-3">
-  <input
-    type="text"
-    class="form-control"
-    placeholder="Nhập nội dung"
-    [(ngModel)]="note.content"
-    aria-label="Nhập nội dung"
-    aria-describedby="basic-addon2"
-  />
-  <div class="input-group-append">
-    <button class="btn btn-outline-primary" (click)="save()" type="button">Lưu</button>
+<ng-container *ngIf="!hide">
+  <h4 class="text-info text-center">Quản lý ghi nhớ</h4>
+
+  <div class="input-group mb-3" style="padding: 10px">
+    <div class="input-group-prepend">
+      <div class="input-group-text bg-danger text-white">Lưu ý</div>
+    </div>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Nhập nội dung"
+      [(ngModel)]="content"
+      aria-label="Nhập nội dung"
+      aria-describedby="basic-addon2"
+      [readOnly]="note$ | async"
+    />
+    <div class="input-group-append">
+      <button *ngIf="!note$" class="btn btn-outline-primary" (click)="save()" type="button">
+        Lưu
+      </button>
+      <button *ngIf="note$" class="btn btn-outline-danger" (click)="delete()" type="button">
+        Xóa
+      </button>
+    </div>
   </div>
-</div>
+</ng-container>

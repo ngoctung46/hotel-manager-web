@@ -2,23 +2,35 @@
   <div class="card-header bg-info">
     {{ room.type === 0 ? 'Phòng Đơn' : 'Phòng Đôi' }}
   </div>
-  <div class="card-body" [ngStyle]="{ background: room.occupied ? 'coral' : 'white' }">
+  <div
+    class="card-body"
+    [ngStyle]="{ background: room.occupied ? 'coral' : 'white' }"
+    [ngClass]="{ 'bg-secondary': room.status == 1, 'bg-success': room.status == 0 }"
+  >
     <h1 class="card-title">{{ room.number }}</h1>
     <p class="card-text">
       <span>{{ room.occupied ? 'Có Khách' : 'Trống' }}</span>
-      <span *ngIf="room.occupied">- {{ room.status | roomStatus }}</span>
+      <span>- {{ room.status | roomStatus }}</span>
     </p>
   </div>
   <div class="card-footer" style="padding: 0px">
     <button
       tooltip="Nhận Phòng"
-      *ngIf="!room.occupied; else elseBlock"
+      *ngIf="!room.occupied && room.status == 2"
       class="btn btn-block btn-outline-danger"
       [routerLink]="['/customer/room', room.id]"
     >
-      <mat-icon>hotel</mat-icon>
+      <mat-icon>launch</mat-icon>
     </button>
-    <ng-template #elseBlock>
+    <button
+      tooltip="Dọn phòng xong"
+      *ngIf="!room.occupied && room.status == 1"
+      class="btn btn-block btn-outline-secondary"
+      (click)="updateStatus()"
+    >
+      <mat-icon>done_outline</mat-icon>
+    </button>
+    <div *ngIf="room.occupied">
       <div class="btn-group btn-block" role="group">
         <button
           tooltip="Thông tin khách lưu trú"
@@ -40,18 +52,18 @@
         <button
           type="button"
           class="btn btn-outline-info"
-          tooltip="Khách trong phòng, đi ra ngoài"
-          (click)="updateStatus()"
+          tooltip="Báo cần dọn phòng, đã dọn phòng"
+          (click)="updateStatus(true)"
         >
-          <mat-icon>transfer_within_a_station</mat-icon>
+          <mat-icon>format_paint</mat-icon>
         </button>
         <button
           type="button"
           class="btn btn-outline-info"
-          tooltip="Báo cần dọn phòng, đã dọn phòng"
-          (click)="updateStatus(true)"
+          tooltip="Khách trong phòng, đi ra ngoài"
+          (click)="updateStatus()"
         >
-          <mat-icon>room_service</mat-icon>
+          <mat-icon>transfer_within_a_station</mat-icon>
         </button>
         <button
           type="button"
@@ -62,6 +74,6 @@
           <mat-icon>receipt</mat-icon>
         </button>
       </div>
-    </ng-template>
+    </div>
   </div>
 </div>

@@ -1,0 +1,48 @@
+<form [formGroup]="bookingForm" (submit)="onSubmit()">
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="name">Tên khách đặt phòng</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        placeholder="Nhập tên"
+        formControlName="name"
+      />
+    </div>
+    <div class="form-group col">
+      <label for="phone">Điện thoại liên hệ</label>
+      <input
+        type="text"
+        class="form-control"
+        id="phone"
+        placeholder="Nhập số ĐT"
+        formControlName="phone"
+      />
+    </div>
+    <div class="form-group col">
+      <label for="name">Loại phòng</label>
+      <select class="form-control" formControlName="type">
+        <option *ngFor="let item of items" [ngValue]="item.value">{{ item.name }}</option>
+      </select>
+    </div>
+    <div class="form-group col">
+      <label for="phone">Ngày nhận phòng</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="date"
+        bsDatepicker
+        [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+      />
+    </div>
+    <div class="form-group col">
+      <timepicker [formControlName]="'time'"></timepicker>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col text-center" style="padding: 10px">
+      <button class="btn btn-primary">Cập nhật</button>
+    </div>
+  </div>
+</form>

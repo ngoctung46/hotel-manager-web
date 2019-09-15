@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "hoanglong-750ae": {
+      "hosting": {
+        "hotel-manager": [
+          "hoanglong-750ae"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "hoanglongmanger": "hoanglong-750ae"
+  }
+}

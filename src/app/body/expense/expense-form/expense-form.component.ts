@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewChildren } from '@angular/core';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Expense } from 'src/app/models/expense';
@@ -14,6 +14,7 @@ export class ExpenseFormComponent implements OnInit {
   expenseForm: FormGroup;
   expense: Expense;
   expenses: Expense[];
+  @ViewChild('name', { static: false }) nameField: ElementRef;
   constructor(private fs: FirebaseService, private fb: FormBuilder) {}
 
   items = [
@@ -22,7 +23,10 @@ export class ExpenseFormComponent implements OnInit {
   ];
   ngOnInit() {
     this.resetForm();
-    this.fs.getExpenses().subscribe(expenses => (this.expenses = expenses));
+    this.fs
+      .getExpensesByDateRange(new Date(), new Date())
+      .subscribe(expenses => (this.expenses = expenses));
+    this.nameField.nativeElement.focus();
   }
 
   onSubmit() {

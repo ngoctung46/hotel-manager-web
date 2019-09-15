@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Note } from 'src/app/models/note';
 import { FirebaseService } from 'src/app/services/firebase.service';
@@ -9,10 +9,8 @@ import { FirebaseService } from 'src/app/services/firebase.service';
   styleUrls: ['./note.component.css']
 })
 export class NoteComponent implements OnInit {
-  note$: Observable<Note>;
+  @Input() note$: Observable<Note>;
   constructor(private fs: FirebaseService) {}
 
-  ngOnInit() {
-    this.note$ = this.fs.getNote();
-  }
+  ngOnInit() {}
 }

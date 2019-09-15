@@ -11,6 +11,7 @@ import { Product } from '../models/product';
 import { OrderLine } from '../models/order-line';
 import { Expense } from '../models/expense';
 import { Note } from '../models/note';
+import { Booking } from '../models/booking';
 
 const MENU_COLLECTION = 'menu-items';
 const ROOM_COLLECTION = 'rooms';
@@ -21,6 +22,7 @@ const ORDER_LINE_COLLECTION = 'order-lines';
 const EXPENSE_COLLECTION = 'expenses';
 const NOTE_COLLECTION = 'notes';
 const NOTE_ID = 'hoanglong.note.id';
+const BOOKING_COLLECTION = 'bookings';
 @Injectable({
   providedIn: 'root'
 })
@@ -33,6 +35,7 @@ export class FirebaseService {
   private orderLines: AngularFirestoreCollection<OrderLine>;
   private expenses: AngularFirestoreCollection<Expense>;
   private notes: AngularFirestoreCollection<Note>;
+  private bookings: AngularFirestoreCollection<Booking>;
   constructor(private afs: AngularFirestore) {
     this.menuItems = afs.collection(MENU_COLLECTION);
     this.rooms = afs.collection(ROOM_COLLECTION);
@@ -42,6 +45,7 @@ export class FirebaseService {
     this.orderLines = afs.collection(ORDER_LINE_COLLECTION);
     this.expenses = afs.collection(EXPENSE_COLLECTION);
     this.notes = afs.collection(NOTE_COLLECTION);
+    this.bookings = afs.collection(BOOKING_COLLECTION, ref => ref.where('done', '==', false));
   }
 
   initMenu() {
@@ -53,7 +57,7 @@ export class FirebaseService {
         this.addMenuItem({ displayName: 'Dịch vụ', path: '/product', order: 3 });
         this.addMenuItem({ displayName: 'Nhập kho', path: '/stock', order: 4 });
         this.addMenuItem({ displayName: 'Đặt phòng', path: '/booking', order: 5 });
-        this.addMenuItem({ displayName: 'Ghi chú', path: '/note', order: 4 });
+        this.addMenuItem({ displayName: 'Ghi chú', path: '/note', order: 6 });
       }
     });
   }
@@ -72,7 +76,13 @@ export class FirebaseService {
               roomRate = 350_000;
               roomType = RoomType.Single;
             }
-            this.addRoom({ number: i * 100 + j, rate: roomRate, type: roomType, occupied: false });
+            this.addRoom({
+              number: i * 100 + j,
+              rate: roomRate,
+              type: roomType,
+              occupied: false,
+              status: RoomStatus.Clean
+            });
           }
         }
       }
@@ -191,7 +201,8 @@ export class FirebaseService {
         actions.map(a => {
           const data = a.payload.doc.data() as Order;
           const orderId = a.payload.doc.id;
-          return { orderId, ...data };
+          const orderLines = this.getOrderLinesByOrderId(orderId);
+          return { orderId, orderLines, ...data };
         })
       )
     );
@@ -350,5 +361,52 @@ export class FirebaseService {
 
   getNote(): Observable<Note> {
     return this.notes.doc(NOTE_ID).valueChanges();
+  }
+
+  deleteNote() {
+    this.notes.doc(NOTE_ID).delete();
+  }
+
+  // BOOKINGS SERVICE
+  addBooking(booking: Booking): string {
+    const id = this.afs.createId();
+    booking.createdAt = new Date().getTime();
+    booking.done = false;
+    this.bookings.doc(id).set(booking);
+    return id;
+  }
+
+  updateBooking(booking: Booking) {
+    booking.updatedAt = new Date().getTime();
+    this.bookings.doc(booking.bookingId).update(booking);
+  }
+
+  deleteBooking(id: string) {
+    this.bookings.doc(id).delete();
+  }
+
+  getBookingById(id: string): Observable<Booking> {
+    return this.bookings
+      .doc(id)
+      .snapshotChanges()
+      .pipe(
+        map(doc => {
+          const bookingId = doc.payload.id;
+          const data = doc.payload.data() as Booking;
+          return { bookingId, ...data };
+        })
+      );
+  }
+
+  getBookings(): Observable<Booking[]> {
+    return this.bookings.snapshotChanges().pipe(
+      map(actions =>
+        actions.map(a => {
+          const bookingId = a.payload.doc.id;
+          const data = a.payload.doc.data() as Booking;
+          return { bookingId, ...data };
+        })
+      )
+    );
   }
 }

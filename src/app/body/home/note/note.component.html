@@ -1,4 +1,2 @@
-<app-note-form></app-note-form>
-<div *ngIf="note$ | async; let note" class="alert alert-primary" role="alert">
-  {{ note.content }}
-</div>
+<app-note-form [note$]="note$"></app-note-form>
+<app-booking-note></app-booking-note>

@@ -1,4 +1,5 @@
 import { OrderLine } from './order-line';
+import { Observable } from 'rxjs';
 
 export interface Order {
   orderId?: string;
@@ -7,7 +8,7 @@ export interface Order {
   checkInTime?: number;
   checkOutTime?: number;
   orderLineIds?: string[];
-  orderLines?: OrderLine[];
+  orderLines?: Observable<OrderLine[]>;
   customerId?: string;
   total?: number;
   createdAt?: number;

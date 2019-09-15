@@ -11,8 +11,10 @@ export class RoomStatusPipe implements PipeTransform {
         return 'Ra Ngoài';
       case RoomStatus.NeedCleaning:
         return 'Cần dọn phòng';
+      case RoomStatus.Clean:
+        return 'Sạch';
       default:
-        return 'Đang ở';
+        return '';
     }
   }
 }

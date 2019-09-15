@@ -97,7 +97,11 @@ export class ReceiptComponent implements OnInit {
   getDailyRate(): number {
     const year = this.checkInTime.getFullYear();
     const month = this.checkInTime.getMonth();
-    const date = this.checkInTime.getDate();
+    let date = this.checkInTime.getDate();
+    const hour = this.checkInTime.getHours();
+    if (hour >= 0 && hour <= 6) {
+      date--;
+    }
     const start = new Date(year, month, date, 12, 0, 0).getTime();
     const diff = this.getTimeDiff(start);
     const extra = this.getHourlyRate(diff);
