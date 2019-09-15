@@ -17,6 +17,8 @@ export class ReportComponent implements OnInit {
   orders: Order[] = [];
   total: Total = {};
   totalExpense = 0;
+  start: Date;
+  end: Date;
   constructor(private localeService: BsLocaleService, private fs: FirebaseService) {}
 
   ngOnInit() {
@@ -28,10 +30,10 @@ export class ReportComponent implements OnInit {
     if (dateRange == null || dateRange.length !== 2) {
       return;
     }
-    const start = dateRange[0];
-    const end = dateRange[1];
-    this.getOrders(start, end);
-    this.getTotalExpense(start, end);
+    this.start = dateRange[0];
+    this.end = dateRange[1];
+    this.getOrders(this.start, this.end);
+    this.getTotalExpense(this.start, this.end);
   }
 
   private getOrders(start: Date, end: Date) {

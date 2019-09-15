@@ -5,7 +5,7 @@ import { tap, map } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Room } from '../models/room';
 import { Customer } from '../models/customer';
-import { RoomType, RoomStatus } from '../enums';
+import { RoomType, RoomStatus, ProductType } from '../enums';
 import { Order } from '../models/order';
 import { Product } from '../models/product';
 import { OrderLine } from '../models/order-line';
@@ -228,6 +228,16 @@ export class FirebaseService {
     return this.afs
       .collection<OrderLine>(ORDER_LINE_COLLECTION, ref => ref.where('orderId', '==', orderId))
       .valueChanges();
+  }
+  getItemsSoldByDateRange(start: Date, end: Date): Observable<OrderLine[]> {
+    const min = new Date(start.getFullYear(), start.getMonth(), start.getDate(), 0, 0, 0).getTime();
+    const max = new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59).getTime();
+    return this.afs
+      .collection<OrderLine>(ORDER_LINE_COLLECTION, ref =>
+        ref.where('createdAt', '>=', min).where('createdAt', '<=', end)
+      )
+      .valueChanges()
+      .pipe(map(orderlines => orderlines.filter(x => x.product.type === ProductType.Item)));
   }
   getOrderLineByProductIdAndOrderId(productId: string, orderId: string): Observable<OrderLine> {
     const collection = this.afs.collection<OrderLine>(ORDER_LINE_COLLECTION, ref =>
