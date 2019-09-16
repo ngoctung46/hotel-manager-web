@@ -18,18 +18,26 @@ export class ProductReportComponent implements OnInit {
   ngOnInit() {
     if (this.start && this.end) {
       this.fs.getItemsSoldByDateRange(this.start, this.end).subscribe(ols => {
-        this.orderLines = Object.values(
-          ols.reduce(
-            (r, o) => (
-              r[o.productId]
-                ? (r[o.productId].quantity += o.quantity)
-                : (r[o.productId] = { ...o }),
-              r
-            ),
-            {}
-          )
-        );
+        this.orderLines = this.sumAndGroupOrderLines(ols);
+        this.setProducts();
       });
     }
+  }
+
+  sumAndGroupOrderLines(data: OrderLine[]): OrderLine[] {
+    return Object.values(
+      data.reduce(
+        (r, o) => (
+          r[o.productId] ? (r[o.productId].quantity += o.quantity) : (r[o.productId] = { ...o }), r
+        ),
+        {}
+      )
+    );
+  }
+
+  setProducts() {
+    this.orderLines.forEach(ol => {
+      this.fs.getProductById(ol.productId).subscribe(product => (ol.product = product));
+    });
   }
 }

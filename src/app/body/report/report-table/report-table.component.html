@@ -21,7 +21,7 @@
       <td>
         <div class="row" *ngFor="let ol of order.orderLines | async">
           <div class="col-4 text-left">{{ ol.product.name }}:</div>
-          <div class="col-4 text-center">{{ ol.price | number }} x {{ ol.quantity | number }}</div>
+          <div class="col-4 text-right">{{ ol.price | number }} x {{ ol.quantity | number }}</div>
           <div class="col-4 text-right">
             <b>{{ ol.total | number }}đ</b>
           </div>

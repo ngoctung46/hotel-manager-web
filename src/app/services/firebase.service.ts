@@ -12,6 +12,7 @@ import { OrderLine } from '../models/order-line';
 import { Expense } from '../models/expense';
 import { Note } from '../models/note';
 import { Booking } from '../models/booking';
+import { History } from '../models/history';
 
 const MENU_COLLECTION = 'menu-items';
 const ROOM_COLLECTION = 'rooms';
@@ -23,6 +24,7 @@ const EXPENSE_COLLECTION = 'expenses';
 const NOTE_COLLECTION = 'notes';
 const NOTE_ID = 'hoanglong.note.id';
 const BOOKING_COLLECTION = 'bookings';
+const QUANTITY_HISTORY_COLLECTION = 'quantity_histories';
 @Injectable({
   providedIn: 'root'
 })
@@ -36,6 +38,7 @@ export class FirebaseService {
   private expenses: AngularFirestoreCollection<Expense>;
   private notes: AngularFirestoreCollection<Note>;
   private bookings: AngularFirestoreCollection<Booking>;
+  private histories: AngularFirestoreCollection<History>;
   constructor(private afs: AngularFirestore) {
     this.menuItems = afs.collection(MENU_COLLECTION);
     this.rooms = afs.collection(ROOM_COLLECTION);
@@ -46,6 +49,7 @@ export class FirebaseService {
     this.expenses = afs.collection(EXPENSE_COLLECTION);
     this.notes = afs.collection(NOTE_COLLECTION);
     this.bookings = afs.collection(BOOKING_COLLECTION, ref => ref.where('done', '==', false));
+    this.histories = afs.collection(QUANTITY_HISTORY_COLLECTION);
   }
 
   initMenu() {
@@ -270,6 +274,10 @@ export class FirebaseService {
       )
     );
   }
+
+  getProductById(id: string): Observable<Product> {
+    return this.products.doc<Product>(id).valueChanges();
+  }
   getStockableProducts(): Observable<Product[]> {
     const products = this.afs.collection(PRODUCT_COLLECTION, ref => ref.where('type', '==', 2));
     return products.snapshotChanges().pipe(
@@ -418,5 +426,13 @@ export class FirebaseService {
         })
       )
     );
+  }
+
+  // HISTORIES
+  addHistory(history: History): string {
+    const id = this.afs.createId();
+    history.date = new Date().getTime();
+    this.histories.doc(id).set(history);
+    return id;
   }
 }

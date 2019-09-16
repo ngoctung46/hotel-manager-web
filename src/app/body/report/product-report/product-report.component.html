@@ -11,10 +11,9 @@
   <tbody>
     <tr *ngFor="let orderLine of orderLines" class="align-middle">
       <td>{{ orderLine.product.name }}</td>
-      <td>{{ orderLine.product.inStock }} - {{ orderLine.quantity }}</td>
-      <td>{{ orderLine.quantity }} </td>
       <td>{{ orderLine.product.inStock }}</td>
+      <td>{{ orderLine.quantity }}</td>
+      <td>{{ orderLine.product.inStock - orderLine.quantity }}</td>
     </tr>
   </tbody>
 </table>
-{{ orderLines | json }}
