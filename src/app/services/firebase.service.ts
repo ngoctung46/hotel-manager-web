@@ -234,7 +234,7 @@ export class FirebaseService {
     const max = new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59).getTime();
     return this.afs
       .collection<OrderLine>(ORDER_LINE_COLLECTION, ref =>
-        ref.where('createdAt', '>=', min).where('createdAt', '<=', end)
+        ref.where('createdAt', '>=', min).where('createdAt', '<=', max)
       )
       .valueChanges()
       .pipe(map(orderlines => orderlines.filter(x => x.product.type === ProductType.Item)));
