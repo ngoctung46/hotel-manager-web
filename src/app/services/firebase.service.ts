@@ -435,4 +435,10 @@ export class FirebaseService {
     this.histories.doc(id).set(history);
     return id;
   }
+
+  getHistoriesByProductId(id: string): Observable<History[]> {
+    return this.afs
+      .collection(QUANTITY_HISTORY_COLLECTION, ref => ref.where('productId', '==', id))
+      .valueChanges();
+  }
 }
