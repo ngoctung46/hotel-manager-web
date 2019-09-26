@@ -14,13 +14,24 @@ export class BookingNoteComponent implements OnInit {
 
   ngOnInit() {
     this.fs.getBookings().subscribe(bookings => {
-      const single = bookings.filter(x => x.type === RoomType.Single).length;
-      const double = bookings.filter(x => x.type === RoomType.Double).length;
-      if (single > 0 || double > 0) {
+      const single = bookings
+        .filter(x => x.type === RoomType.Single)
+        .sort((x, y) => x.date - y.date);
+      const double = bookings
+        .filter(x => x.type === RoomType.Double)
+        .sort((x, y) => x.date - y.date);
+      const singleDate = single
+        .map(x => `${new Date(x.date).getDate()}/${new Date(x.date).getMonth()}`)
+        .join(',');
+      const doubleDate = single
+        .map(x => `${new Date(x.date).getDate()}/${new Date(x.date).getMonth()}`)
+        .join(',');
+
+      if (single.length > 0 || double.length > 0) {
         this.show = true;
       }
-      this.content += single > 0 ? `Phòng đơn: ${single} ` : '';
-      this.content += double > 0 ? `Phòng đôi: ${double} ` : '';
+      this.content += single.length > 0 ? `Phòng đơn: ${single.length} (${singleDate}) ` : '';
+      this.content += double.length > 0 ? `Phòng đôi: ${double.length} (${doubleDate}) ` : '';
     });
   }
 }

@@ -10,6 +10,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 })
 export class NoteComponent implements OnInit {
   @Input() note$: Observable<Note>;
+  @Input() showTitle = true;
   constructor(private fs: FirebaseService) {}
 
   ngOnInit() {}
