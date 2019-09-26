@@ -3,4 +3,6 @@ export interface History {
   productId?: string;
   quantity?: number;
   date?: number;
+  previous?: number;
+  name: string;
 }

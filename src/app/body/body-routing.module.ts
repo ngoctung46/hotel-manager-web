@@ -11,6 +11,7 @@ import { ReceiptComponent } from './receipt/receipt.component';
 import { ExpenseComponent } from './expense/expense.component';
 import { NoteComponent } from './home/note/note.component';
 import { BookingComponent } from './booking/booking.component';
+import { StockHistoryComponent } from './stock/stock-history/stock-history.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
       { path: 'report', component: ReportComponent },
       { path: 'product', component: ProductComponent },
       { path: 'stock', component: StockComponent },
+      { path: 'stock/:id', component: StockHistoryComponent },
       { path: 'expense', component: ExpenseComponent },
       { path: 'note', component: NoteComponent },
       { path: 'booking', component: BookingComponent },

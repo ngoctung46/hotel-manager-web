@@ -79,7 +79,7 @@ export class ReceiptComponent implements OnInit {
   }
 
   getRate(): number {
-    if (this.timeDiff.hours <= 5) {
+    if (this.timeDiff.hours <= 5 && this.timeDiff.days === 0) {
       return this.getHourlyRate(this.timeDiff);
     }
     return this.getDailyRate();

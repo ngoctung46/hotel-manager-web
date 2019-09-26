@@ -1,4 +1,4 @@
-<nav>
+<!-- <nav>
   <mat-toolbar color="primary">
     <span>Quản lý khách sạn Hoàng Long</span>
     <span class="spacer alert"></span>
@@ -11,4 +11,26 @@
       {{ item.displayName }}
     </button>
   </mat-toolbar>
+</nav> -->
+<!-- <nav class="site-header sticky-top py-1">
+  <div class="container d-flex flex-column flex-md-row justify-content-between">
+    <a *ngFor="let item of menuItems$ | async" routerLink="{{ item.path }}"
+      routerLinkActive="active">{{item.displayName}}</a>
+  </div>
+</nav> -->
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+  <a class="navbar-brand" href="#">HL</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" *ngFor="let item of menuItems$ | async" routerLinkActive="active">
+        <a class="nav-link" routerLink="{{ item.path }}">{{ item.displayName }} <span
+            class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+  </div>
 </nav>

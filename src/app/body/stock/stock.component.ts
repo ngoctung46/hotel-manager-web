@@ -34,11 +34,13 @@ export class StockComponent implements OnInit {
       return;
     }
     const qty = this.stockForm.get('quantity').value + +this.product.inStock;
-    this.fs.updateProductQty(this.product.id, qty);
     this.fs.addHistory({
       productId: this.product.id,
-      quantity: this.stockForm.get('quantity').value as number
+      quantity: this.stockForm.get('quantity').value as number,
+      previous: this.product.inStock,
+      name: this.product.name
     });
+    this.fs.updateProductQty(this.product.id, qty);
     this.stockForm.reset();
     this.product = null;
   }

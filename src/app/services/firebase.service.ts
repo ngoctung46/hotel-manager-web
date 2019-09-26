@@ -438,7 +438,8 @@ export class FirebaseService {
 
   getHistoriesByProductId(id: string): Observable<History[]> {
     return this.afs
-      .collection(QUANTITY_HISTORY_COLLECTION, ref => ref.where('productId', '==', id))
-      .valueChanges();
+      .collection<History>(QUANTITY_HISTORY_COLLECTION, ref => ref.where('productId', '==', id))
+      .valueChanges()
+      .pipe(map(items => items.sort((x, y) => y.date - x.date)));
   }
 }

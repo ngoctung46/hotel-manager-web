@@ -3,26 +3,16 @@
   <div class="form-group form-row">
     <div class="col"></div>
     <div class="col">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Tên"
-        formControlName="name"
-        [typeahead]="products"
-        typeaheadOptionField="name"
-        (typeaheadOnSelect)="onSelect($event)"
-      />
+      <input type="text" class="form-control" placeholder="Tên" formControlName="name" [typeahead]="products"
+        typeaheadOptionField="name" (typeaheadOnSelect)="onSelect($event)" />
     </div>
     <div class="col">
       <input type="number" class="form-control" placeholder="Nhập kho" formControlName="quantity" />
     </div>
     <div class="col">
       <div class="btn-group">
-        <button
-          type="submit"
-          class="btn btn-outline-primary"
-          [disabled]="stockForm.invalid || stockForm.get('quantity').value <= 0"
-        >
+        <button type="submit" class="btn btn-outline-primary"
+          [disabled]="stockForm.invalid || stockForm.get('quantity').value <= 0">
           Nhập kho
         </button>
       </div>
@@ -41,7 +31,7 @@
   <tbody>
     <tr *ngFor="let product of products; let i = index">
       <th scope="row">{{ i + 1 }}</th>
-      <td>{{ product.name }}</td>
+      <td><a [routerLink]="['/stock', product.id]">{{ product.name }}</a></td>
       <td>{{ product.description }}</td>
       <td [ngClass]="{ 'text-danger': product.inStock <= 10 }" class="text-primary">
         <b>{{ product.inStock | number }}</b>

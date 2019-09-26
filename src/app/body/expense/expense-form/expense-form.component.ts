@@ -14,7 +14,6 @@ export class ExpenseFormComponent implements OnInit {
   expenseForm: FormGroup;
   expense: Expense;
   expenses: Expense[];
-  @ViewChild('name', { static: false }) nameField: ElementRef;
   constructor(private fs: FirebaseService, private fb: FormBuilder) {}
 
   items = [
@@ -26,7 +25,6 @@ export class ExpenseFormComponent implements OnInit {
     this.fs
       .getExpensesByDateRange(new Date(), new Date())
       .subscribe(expenses => (this.expenses = expenses));
-    this.nameField.nativeElement.focus();
   }
 
   onSubmit() {

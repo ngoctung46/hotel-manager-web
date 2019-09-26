@@ -1,21 +1,13 @@
+<div class="input-group mb-3" style="padding: 10px">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="date-range">Chọn ngày</span>
+  </div>
+  <input type="text" name="fromDate" class="form-control" placeholder="Từ ngày - Đến ngày" bsDaterangepicker
+    [(ngModel)]="bsRangeValue" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" (bsValueChange)="onValueChange($event)" />
+</div>
 <ng-container *ngIf="expenses$ | async; let expenses">
   <ng-container *ngIf="expenses.length > 0">
     <h4 class="text-info text-center">Danh sách thu chi</h4>
-    <div class="input-group mb-3" style="padding: 10px">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="date-range">Chọn ngày</span>
-      </div>
-      <input
-        type="text"
-        name="fromDate"
-        class="form-control"
-        placeholder="Từ ngày - Đến ngày"
-        bsDaterangepicker
-        [(ngModel)]="bsRangeValue"
-        [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
-        (bsValueChange)="onValueChange($event)"
-      />
-    </div>
     <table class="table table-bordered text-center">
       <thead class="bg-info">
         <th>Tên</th>
@@ -23,10 +15,7 @@
         <th class="text-right">Loại</th>
       </thead>
       <tbody>
-        <tr
-          *ngFor="let expense of expenses$ | async"
-          [ngClass]="{ 'text-danger': expense.type == 1 }"
-        >
+        <tr *ngFor="let expense of expenses" [ngClass]="{ 'text-danger': expense.type == 1 }">
           <td>{{ expense.name }}</td>
           <td>{{ expense.type === 0 ? 'Thu' : 'Chi' }}</td>
           <th class="text-right">{{ expense.amount | number }}đ</th>

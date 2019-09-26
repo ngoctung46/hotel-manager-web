@@ -1,19 +1,21 @@
-<h4 class="text-info text-center">Thống kê số lượng nước</h4>
-<table class="table table-sm table-bordered">
-  <thead>
-    <tr class="text-center bg-info">
-      <th scope="col">Tên</th>
-      <th scope="col">Số lượng ban đầu</th>
-      <th scope="col">Số lượng bán ra</th>
-      <th scope="col">Còn lại</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let orderLine of orderLines" class="align-middle">
-      <td>{{ orderLine.product.name }}</td>
-      <td>{{ orderLine.product.inStock }}</td>
-      <td>{{ orderLine.quantity }}</td>
-      <td>{{ orderLine.product.inStock - orderLine.quantity }}</td>
-    </tr>
-  </tbody>
-</table>
+<ng-container *ngIf="orderLines && orderLines.length > 0">
+  <h4 class="text-info text-center">Thống kê số lượng nước</h4>
+  <table class="table table-sm table-bordered">
+    <thead>
+      <tr class="text-center bg-info">
+        <th scope="col">Tên</th>
+        <th scope="col">Số lượng ban đầu</th>
+        <th scope="col">Số lượng bán ra</th>
+        <th scope="col">Còn lại</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let orderLine of orderLines" class="align-middle text-center">
+        <td>{{ orderLine.product.name }}</td>
+        <td>{{ orderLine.product.inStock + orderLine.quantity }}</td>
+        <td>{{ orderLine.quantity }}</td>
+        <td>{{ orderLine.product.inStock }}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>

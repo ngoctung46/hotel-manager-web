@@ -44,6 +44,7 @@ import { BookingComponent } from './booking/booking.component';
 import { BookingListComponent } from './booking/booking-list/booking-list.component';
 import { BookingNoteComponent } from './home/note/booking-note/booking-note.component';
 import { ProductReportComponent } from './report/product-report/product-report.component';
+import { StockHistoryComponent } from './stock/stock-history/stock-history.component';
 
 defineLocale('vi', viLocale);
 @NgModule({
@@ -75,7 +76,8 @@ defineLocale('vi', viLocale);
     BookingComponent,
     BookingListComponent,
     BookingNoteComponent,
-    ProductReportComponent
+    ProductReportComponent,
+    StockHistoryComponent
   ],
   providers: [FirebaseService],
   imports: [
