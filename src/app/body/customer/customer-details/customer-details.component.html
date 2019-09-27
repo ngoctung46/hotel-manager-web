@@ -1,41 +1,44 @@
-<section
-  *ngIf="customer$ | async; let customer"
-  class="resume-section p-3 p-lg-5 d-flex align-items-center"
-  id="about"
->
-  <div class="w-100">
-    <h1 class="mb-0">
-      {{ customer.lastName }}
-      <span class="text-primary">{{ customer.firstName }}</span>
-    </h1>
-    <div class="lead mb-3 text-success">
-      {{ customer.addressLine1 }} · {{ customer.addressLine2 }}, {{ customer.city }},
-      {{ customer.country }} · ĐT: {{ customer.phone }} ·
-    </div>
-    <div class="lead mb-5">
-      <div class="row">
-        <div class="col">
-          <b>Ngày sinh:</b> {{ customer.birthDate.toDate() | date: 'dd/MM/yyyy' }}
-        </div>
-        <div class="col"><b>Nơi sinh:</b> {{ customer.birthPlace }}</div>
-        <div class="col">
-          <b></b>
-        </div>
-        <div class="col"></div>
+<div id="print-section">
+  <section
+    *ngIf="customer$ | async; let customer"
+    class="resume-section p-3 p-lg-5 d-flex align-items-center"
+    id="about"
+  >
+    <div class="w-100">
+      <h1 class="mb-0">
+        {{ customer.lastName }}
+        <span class="text-primary">{{ customer.firstName }}</span>
+      </h1>
+      <div class="lead mb-3 text-success">
+        {{ customer.addressLine1 }} · {{ customer.addressLine2 }}· {{ customer.city }}·
+        {{ customer.country }} · ĐT: {{ customer.phone }} ·
       </div>
-      <div class="row">
-        <div class="col"><b>CMND số: </b>{{ customer.idNumber }}</div>
-        <div class="col">
-          <b>Ngày cấp: </b>{{ customer.issuedDate.toDate() | date: 'dd/MM/yyyy' }}
+      <div class="lead mb-5">
+        <div class="row">
+          <div class="col">
+            <b>Ngày sinh:</b> {{ customer.birthDate.toDate() | date: 'dd/MM/yyyy' }}
+          </div>
+          <div class="col"><b>Nơi sinh:</b> {{ customer.birthPlace }}</div>
+          <div class="col">
+            <b></b>
+          </div>
+          <div class="col"></div>
         </div>
-        <div class="col">
-          <b>Ngày hết hạn: </b>{{ customer.expiredDate.toDate() | date: 'dd/MM/yyyy' }}
+        <div class="row">
+          <div class="col"><b>CMND số: </b>{{ customer.idNumber }}</div>
+          <div class="col">
+            <b>Ngày cấp: </b>{{ customer.issuedDate.toDate() | date: 'dd/MM/yyyy' }}
+          </div>
+          <div class="col">
+            <b>Ngày hết hạn: </b>{{ customer.expiredDate.toDate() | date: 'dd/MM/yyyy' }}
+          </div>
+          <div class="col"><b>Nơi cấp: </b>{{ customer.issuedPlace }}</div>
         </div>
-        <div class="col"><b>Nơi cấp: </b>{{ customer.issuedPlace }}</div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 <div class="text-center">
+  <button class="btn btn-outline-info" printSectionId="print-section" ngxPrint>In</button>
   <button class="btn btn-outline-primary" (click)="goBack()">Quay về</button>
 </div>

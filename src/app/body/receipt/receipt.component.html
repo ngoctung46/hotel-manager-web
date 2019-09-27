@@ -1,39 +1,47 @@
-<h3 class="text-center text-primary">Hóa đơn tạm tính phòng {{ room.number }}</h3>
-<div *ngIf="orderLines$ | async; let orderLines">
-  <div *ngIf="orderLines.length > 0">
-    <h4 class="text-left text-danger">
-      Tiền nước và dịch vụ
-    </h4>
+<div id="print-section">
+  <h3 class="text-center text-primary">Khách sạn Hoàng Long</h3>
+  <h5 class="text-center text-primary">
+    40 Hậu Giang Phường 4, Tân Bình, TP. Hồ Chí Minh. ĐT: 0985997164
+  </h5>
+  <h3 class="text-center text-primary">Hóa đơn tạm tính phòng {{ room.number }}</h3>
+  <div *ngIf="orderLines$ | async; let orderLines">
+    <div *ngIf="orderLines.length > 0">
+      <h4 class="text-left text-danger">
+        Tiền nước và dịch vụ
+      </h4>
+    </div>
   </div>
-</div>
-<app-order-details [orderLines$]="orderLines$" (finishEvent)="getTotal($event)"></app-order-details>
-<h4 class="text-left text-danger">Tiền phòng</h4>
-<table class="table table-hover table-bordered text-center" *ngIf="order$ | async; let order">
-  <tr class="bg-warning">
-    <td>Nhận phòng</td>
-    <td>Trả phòng</td>
-    <td>Ngày</td>
-    <td>Giờ</td>
-    <td>Phút</td>
-    <td>Giá phòng</td>
-    <td>Tổng tiền</td>
-  </tr>
-  <tr>
-    <td>{{ checkInTime | date: 'dd/MM/yyyy HH:mm' }}</td>
-    <td>{{ now | date: 'dd/MM/yyyy HH:mm' }}</td>
-    <td>{{ timeDiff.days }}</td>
-    <td>{{ timeDiff.hours }}</td>
-    <td>{{ timeDiff.minutes }}</td>
-    <td>{{ room.rate | number }}đ</td>
-    <td>{{ rate | number }}đ</td>
-  </tr>
-</table>
+  <app-order-details
+    [orderLines$]="orderLines$"
+    (finishEvent)="getTotal($event)"
+  ></app-order-details>
+  <h4 class="text-left text-danger">Tiền phòng</h4>
+  <table class="table table-hover table-bordered text-center" *ngIf="order$ | async; let order">
+    <tr class="bg-warning">
+      <td>Nhận phòng</td>
+      <td>Trả phòng</td>
+      <td>Ngày</td>
+      <td>Giờ</td>
+      <td>Phút</td>
+      <td>Giá phòng</td>
+      <td>Tổng tiền</td>
+    </tr>
+    <tr>
+      <td>{{ checkInTime | date: 'dd/MM/yyyy HH:mm' }}</td>
+      <td>{{ now | date: 'dd/MM/yyyy HH:mm' }}</td>
+      <td>{{ timeDiff.days }}</td>
+      <td>{{ timeDiff.hours }}</td>
+      <td>{{ timeDiff.minutes }}</td>
+      <td>{{ room.rate | number }}đ</td>
+      <td>{{ rate | number }}đ</td>
+    </tr>
+  </table>
 
-<h4 class="text-left text-danger">
-  Hóa đơn tổng cộng
-</h4>
-<table class="table table-hover table-bordered text-center">
-  <thead class="bg-success">
+  <h4 class="text-left text-danger">
+    Hóa đơn tổng cộng
+  </h4>
+  <table class="table table-hover table-bordered text-center">
+    <thead class="bg-success">
       <tr>
         <td>Dịch vụ</td>
         <td>Tiền phòng</td>
@@ -43,35 +51,49 @@
         <td>Ghi chú</td>
         <td><b>Thành tiền</b></td>
       </tr>
-  </thead>
-  <tr>
-    <td>{{ total | number }}đ</td>
-    <td>{{ rate | number }}đ</td>
-    <td>{{ total + rate | number }}đ</td>
-    <td>
-      <div class="input-group input-group-sm">
-        <input type="number" class="form-control" size="9" maxlength="9" [(ngModel)]="charge" />
-      </div>
-    </td>
-    <td>
-      <div class="input-group input-group-sm">
-        <input type="number" class="form-control" [(ngModel)]="discount" />
-      </div>
-    </td>
-    <td>
-      <div class="input-group input-group-sm">
-        <input type="text" class="form-control" [(ngModel)]="note" />
-      </div>
-    </td>
-    <td>
-      <b>{{ total + rate + charge - discount | number }}</b>
-    </td>
-  </tr>
-</table>
-
+    </thead>
+    <tr>
+      <td>{{ total | number }}đ</td>
+      <td>{{ rate | number }}đ</td>
+      <td>{{ total + rate | number }}đ</td>
+      <td>
+        <div class="input-group input-group-sm">
+          <input type="number" class="form-control" size="9" maxlength="9" [(ngModel)]="charge" />
+        </div>
+      </td>
+      <td>
+        <div class="input-group input-group-sm">
+          <input type="number" class="form-control" [(ngModel)]="discount" />
+        </div>
+      </td>
+      <td>
+        <div class="input-group input-group-sm">
+          <input type="text" class="form-control" [(ngModel)]="note" />
+        </div>
+      </td>
+      <td>
+        <b>{{ total + rate + charge - discount | number }}</b>
+      </td>
+    </tr>
+  </table>
+</div>
 <div class="text-center">
   <div class="btn-group">
-    <button class="btn btn-primary" [disabled]="(charge > 0 || discount > 0) && !note" (click)="submit()">OK</button>
+    <button
+      class="btn btn-success"
+      printTitle="Khách sạn Hoàng Long"
+      printSectionId="print-section"
+      ngxPrint
+    >
+      In
+    </button>
+    <button
+      class="btn btn-primary"
+      [disabled]="(charge > 0 || discount > 0) && !note"
+      (click)="submit()"
+    >
+      OK
+    </button>
     <button class="btn btn-danger" (click)="cancel()">Hủy</button>
   </div>
 </div>

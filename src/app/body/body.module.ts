@@ -46,6 +46,7 @@ import { BookingListComponent } from './booking/booking-list/booking-list.compon
 import { BookingNoteComponent } from './home/note/booking-note/booking-note.component';
 import { ProductReportComponent } from './report/product-report/product-report.component';
 import { StockHistoryComponent } from './stock/stock-history/stock-history.component';
+import { NgxPrintModule } from 'ngx-print';
 
 defineLocale('vi', viLocale);
 @NgModule({
@@ -87,6 +88,7 @@ defineLocale('vi', viLocale);
     FormsModule,
     ReactiveFormsModule,
     BodyRoutingModule,
+    NgxPrintModule,
     BsDatepickerModule.forRoot(),
     TypeaheadModule.forRoot(),
     AlertModule.forRoot(),
