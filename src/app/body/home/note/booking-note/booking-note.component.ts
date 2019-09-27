@@ -21,11 +21,11 @@ export class BookingNoteComponent implements OnInit {
         .filter(x => x.type === RoomType.Double)
         .sort((x, y) => x.date - y.date);
       const singleDate = single
-        .map(x => `${new Date(x.date).getDate()}/${new Date(x.date).getMonth()}`)
-        .join(',');
-      const doubleDate = single
-        .map(x => `${new Date(x.date).getDate()}/${new Date(x.date).getMonth()}`)
-        .join(',');
+        .map(x => `${new Date(x.date).getDate()}/${new Date(x.date).getMonth() + 1}`)
+        .join(', ');
+      const doubleDate = double
+        .map(x => `${new Date(x.date).getDate()}/${new Date(x.date).getMonth() + 1}`)
+        .join(', ');
 
       if (single.length > 0 || double.length > 0) {
         this.show = true;

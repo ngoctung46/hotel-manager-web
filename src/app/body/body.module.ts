@@ -17,7 +17,8 @@ import {
   BsDatepickerModule,
   TypeaheadModule,
   TooltipModule,
-  BsDropdownModule
+  BsDropdownModule,
+  ModalModule
 } from 'ngx-bootstrap';
 import { FormComponent } from './customer/form/form.component';
 import { defineLocale } from 'ngx-bootstrap/chronos';
@@ -91,7 +92,8 @@ defineLocale('vi', viLocale);
     AlertModule.forRoot(),
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
-    TimepickerModule.forRoot()
+    TimepickerModule.forRoot(),
+    ModalModule.forRoot()
   ]
 })
 export class BodyModule {}

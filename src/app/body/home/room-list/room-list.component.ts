@@ -8,8 +8,9 @@ import { Room } from 'src/app/models/room';
   styleUrls: ['./room-list.component.css']
 })
 export class RoomListComponent implements OnInit {
-  @Input() rooms$: Observable<Room[]>;
-  constructor() {}
+  @Input() rooms$ = new Observable<Room[]>();
+  constructor() {
+  }
 
   ngOnInit() {}
 }
