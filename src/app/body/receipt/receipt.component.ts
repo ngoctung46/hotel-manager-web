@@ -10,11 +10,10 @@ import { Room } from 'src/app/models/room';
 import { RoomType, RoomStatus } from 'src/app/enums';
 import { Location } from '@angular/common';
 const RATES: Rate[] = [
-  { single: 100_000, double: 150_000 },
-  { single: 150_000, double: 170_000 },
-  { single: 170_000, double: 190_000 },
-  { single: 190_000, double: 210_000 },
-  { single: 210_000, double: 230_000 }
+  { single: 100_000, double: 120_000 },
+  { single: 150_000, double: 190_000 },
+  { single: 190_000, double: 240_000 },
+  { single: 210_000, double: 280_000 },
 ];
 @Component({
   selector: 'app-receipt',
@@ -86,7 +85,7 @@ export class ReceiptComponent implements OnInit {
   }
   getHourlyRate(timeDiff: TimeDiff): number {
     let index = timeDiff.hours === 0 ? 0 : timeDiff.hours - 1;
-    if (timeDiff.hours >= 5) {
+    if (timeDiff.hours >= 4) {
       return this.room.rate;
     }
     if (timeDiff.minutes > 30 && timeDiff.hours > 0) {
